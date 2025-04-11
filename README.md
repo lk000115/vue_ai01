@@ -15,6 +15,7 @@
 示例：
   ```<!-- 直接引用 public 目录下的图片 -->
       <link rel="icon" href="/favicon.ico">
+  ```    
 2. assets  经过处理的资源，资源加工厂
 与 public 文件夹不同，assets 文件夹用于存放那些需要经过 Vite 处理的资源文件。这包括样式表、JavaScript 文件
 示例
@@ -27,7 +28,8 @@
    <template>
       <img :src="logo" alt="Logo" />
    </template>
-   
+```
+
 
 
 
