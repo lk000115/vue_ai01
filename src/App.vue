@@ -1,14 +1,12 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
-import Child from './components/Child.vue'
+import demo from './example/demo.vue'
 </script>
 
 <template>
-  <div>
-    sdsdsd
-  </div>
+
   <HelloWorld msg="Vite + Vue" />
-  <Child />
+  <demo />
 </template>
 
 <style scoped>
