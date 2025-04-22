@@ -33,6 +33,12 @@
 1 node环境模块化 commonjs
   最开始,js文件导出时,export和module.exports都指向一个空对象,
   导出时以module.exports = {} 为准,
+  ```
+    例: exports.变量名 = 值;
+        module.exports = {变量名:值,变量名:值} 即  module.exports = {变量1,变量2}
+        导入 const {变量名1,变量名2} = require('路径');   
+    
+  ```
 2 浏览器环境模块化 es6
   node版本12.20.0 以上,可以使用import和export,需要编辑package.json文件,添加type:module,
   三种导出方式:

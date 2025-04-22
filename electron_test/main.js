@@ -5,4 +5,4 @@
 //     }
 // )
 exports.a = 1;
-module.exports.b = 2;
+module.exports = {x:1,y:2};
