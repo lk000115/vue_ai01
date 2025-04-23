@@ -6,3 +6,4 @@
 // )
 exports.a = 1;
 module.exports = {x:1,y:2};
+
