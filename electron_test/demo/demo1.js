@@ -9,5 +9,8 @@ console.log(path.extname(__filename));
 
 let parseobj = path.parse(__filename);
 
-console.log(parseobj);
+// console.log(parseobj);
 
+//掌握path.join()的用法
+let pathstr = path.join(__dirname,'demo1.js');
+console.log(pathstr);
