@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 
 ./electron_test/node_modules
+./ajax_test/node_modules
