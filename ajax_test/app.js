@@ -16,7 +16,12 @@ app.get('/first', (req, res) => {
 });
 
 app.get('/get', (req, res) => {
-  res.send({"name":"zhangsan","age":18});
+  res.send(req.query);
+})
+
+app.post('/post', (req, res) => {
+  console.log(req.body);
+  res.send({"name":"fg","age":18});
 })
 
 app.listen(3000, () => {
