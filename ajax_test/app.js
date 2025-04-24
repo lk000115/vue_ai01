@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.get('/first/', (req, res) => {
+app.get('/first', (req, res) => {
   res.send({"name":"zhangsan"});
 });
 
