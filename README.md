@@ -29,6 +29,9 @@
       <img :src="logo" alt="Logo" />
    </template>
 ```
+## 启动node后台服务模块
+   有modemon  node-dev等工具
+
 ## js的模块化
 1 node环境模块化 commonjs
   最开始,js文件导出时,export和module.exports都指向一个空对象,

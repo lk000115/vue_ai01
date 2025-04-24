@@ -12,7 +12,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/first', (req, res) => {
-  res.send({"name":"zhangsan"});
+  res.send({"name":"zhangsan------"});
 });
 
 app.get('/get', (req, res) => {
