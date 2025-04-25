@@ -26,8 +26,14 @@ function ajax(options) {
     }
     
     xhr.onload = function() {
+        var contentType = xhr.getResponseHeader('Content-Type');
+        // console.log(contentType);
+        var responseText = xhr.responseText;
+        if(contentType.includes('application/json')){
+            responseText = JSON.parse(responseText);
+        }   
         if(xhr.status == 200){
-            options.success(xhr.responseText,xhr);
+            options.success(responseText,xhr);
         }else{
             options.error(xhr.responseText,xhr);
         }
