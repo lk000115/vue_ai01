@@ -4,27 +4,50 @@
     <meta charset="UTF-8">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*" > -->
+    <script src="./tools.js"></script>
     <title> document </title>
 </head>
 <body>
     <h1>ajax入门</h1>
     <script type="text/javascript">
        
-        //1.创建ajax对象
-        var xhr = new XMLHttpRequest();
-        //2.设置请求的url参数，参数1：请求的类型；参数2：请求的url；参数3：设置是否异步请求
-        xhr.open('GET','http://localhost:3000/first');
+        // //1.创建ajax对象
+        // var xhr = new XMLHttpRequest();
+        // //2.设置请求的url参数，参数1：请求的类型；参数2：请求的url；参数3：设置是否异步请求
+        // xhr.open('GET','http://localhost:3000/first');
 
-        //3.发送请求    
-         xhr.send();
-        //4.获取响应数据
-        xhr.onload = function(){
-            if (xhr.status === 200) {
-            console.log(xhr.responseText);       
-           } else {
-            console.error('请求失败，状态码：' + xhr.status);
-            }      
-        }
+        // //3.发送请求    
+        //  xhr.send();
+        // //4.获取响应数据
+        // xhr.onload = function(){
+        //     if (xhr.status === 200) {
+        //     console.log(xhr.responseText);       
+        //    } else {
+        //     console.error('请求失败，状态码：' + xhr.status);
+        //     }      
+        // }
+
+
+    ajax({
+       method: 'POST', 
+       url: 'http://localhost:3000/first',
+       data: {
+        name: 'zhangsan',
+        age: 18,
+
+       },
+       header:{
+        'Content-Type': 'application/x-www-form-urlencoded',
+       },
+       success: function (res, xhr) {
+           console.log(res, xhr); 
+        },
+        error: function (err, xhr) {
+           console.log(err);   
+        
+    }
+})
+
     </script>
     
 </body>

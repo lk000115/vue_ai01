@@ -13,12 +13,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/first', (req, res) => {
-  res.send({"name":"zhangsan------"});
+  res.send(req.query);
 });
 
 app.get('/get', (req, res) => {
   res.send(req.query);
 })
+
+app.post('/first', (req, res) => {
+  res.send(req.body);
+  })
 
 app.post('/post', (req, res) => {
   // console.log(req.body);

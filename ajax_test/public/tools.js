@@ -4,7 +4,7 @@ function ajax(options) {
     var xhr = new XMLHttpRequest();
     var params = '';
     for (var attr in options.data) {
-        param += attr + '=' + options.data[attr] + '&';
+        params += attr + '=' + options.data[attr] + '&';
     }
     params = params.substring(0, params.length - 1);
     if (options.method == 'GET') {
@@ -13,15 +13,23 @@ function ajax(options) {
     xhr.open(options.method, options.url , true);     
 
     if(options.method == 'POST'){
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send(params);
+        //用户希望传递的请求头信息类型
+        var contentType = options.header['Content-Type'];
+        xhr.setRequestHeader('Content-Type', contentType);
+        if (contentType == 'application/json') {
+            xhr.send(JSON.stringify(options.data)) ; 
+        }else{
+            xhr.send(params);
+        }
     }else{
         xhr.send();
     }
     
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            options.success(xhr.responseText);
+    xhr.onload = function() {
+        if(xhr.status == 200){
+            options.success(xhr.responseText,xhr);
+        }else{
+            options.error(xhr.responseText,xhr);
         }
     }
 
