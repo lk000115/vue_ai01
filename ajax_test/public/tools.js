@@ -17,9 +17,12 @@ function ajax(options) {
     var xhr = new XMLHttpRequest();
     var params = '';
     for (var attr in defaults.data) {
+        //将参数拼接成字符串,格式为:key=value&key=value
         params += attr + '=' + defaults.data[attr] + '&';
     }
+    //去掉字符串最后一个&
     params = params.substring(0, params.length - 1);
+    //如果是get请求,将参数拼接到url后面
     if (defaults.method == 'GET') {
         defaults.url = defaults.url + "?" + params;
     }    
