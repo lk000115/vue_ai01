@@ -8,8 +8,7 @@ function ajax(options) {
         data: {},
         header: { 'Content-Type': 'application/x-www-form-urlencoded' },
         success: function() {},
-        error: function() {console.log('失败');
-        },
+        error: function() {},
         ...options
     }
     console.log(defaults);
