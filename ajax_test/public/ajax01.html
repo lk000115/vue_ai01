@@ -28,7 +28,7 @@
         // }
 
 
-    ajax({
+   var p = ajax({
        method: 'POST', 
        url: 'http://localhost:3000/first',
        data: {
@@ -38,11 +38,13 @@
        },
     //    header: { 'Content-Type': 'application/json' },
        success: function (res, xhr) {
-           console.log(res, xhr); 
+           console.log(res, xhr);
+           return res;
         },
 
 })
 
+        
     </script>
     
 </body>
