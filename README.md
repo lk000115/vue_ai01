@@ -49,7 +49,7 @@
        命名导出: export const xxx = xxx;
        批量导出: export {xxx,xxx,xxx} 
 
-
-
-
+3 art-template模板引擎
+  html和数据拼接在服务器段,用npm安装art-template
+  htmp和数据拼接在客户端,安装浏览器端template-web.js
 
