@@ -36,14 +36,18 @@
         'age': '18',
 
        },
-    //    header: { 'Content-Type': 'application/json' },
+       header: { 'Content-Type': 'application/json' },
        success: function (res, xhr) {
            console.log(res, xhr);
            return res;
         },
 
 })
-
+        setTimeout(() => {
+            
+            console.log(p);
+        }, 2000);
+        
         
     </script>
     
