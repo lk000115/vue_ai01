@@ -32,20 +32,15 @@
        method: 'POST', 
        url: 'http://localhost:3000/first',
        data: {
-        name: 'zhangsan',
-        age: 18,
+        'name': 'zhangsan',
+        'age': '18',
 
        },
-       header:{
-        'Content-Type': 'application/x-www-form-urlencoded',
-       },
+       header: { 'Content-Type': 'application/json' },
        success: function (res, xhr) {
            console.log(res, xhr); 
         },
-        error: function (err, xhr) {
-           console.log(err);   
-        
-    }
+
 })
 
     </script>

@@ -1,43 +1,62 @@
 //工具函数封装
 //ajax封装 
 function ajax(options) {
+
+    var defaults = {
+        method: 'GET',
+        url: '',
+        data: {},
+        header: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        success: function() {},
+        error: function() {console.log('失败');
+        },
+        ...options
+    }
+    console.log(defaults);
+     
     var xhr = new XMLHttpRequest();
     var params = '';
-    for (var attr in options.data) {
-        params += attr + '=' + options.data[attr] + '&';
+    for (var attr in defaults.data) {
+        params += attr + '=' + defaults.data[attr] + '&';
     }
     params = params.substring(0, params.length - 1);
-    if (options.method == 'GET') {
-        options.url = options.url + "?" + params;
+    if (defaults.method == 'GET') {
+        defaults.url = defaults.url + "?" + params;
     }    
-    xhr.open(options.method, options.url , true);     
+    xhr.open(defaults.method, defaults.url , true);     
 
-    if(options.method == 'POST'){
+    if(defaults.method == 'POST'){
         //用户希望传递的请求头信息类型
-        var contentType = options.header['Content-Type'];
+        var contentType = defaults.header['Content-Type'];
+        // console.log('contentType',contentType);
         xhr.setRequestHeader('Content-Type', contentType);
+        //如果用户传递的是json类型,需要将json对象转化为字符串
         if (contentType == 'application/json') {
-            xhr.send(JSON.stringify(options.data)) ; 
+            xhr.send(JSON.stringify(defaults.data)) 
         }else{
+
             xhr.send(params);
         }
-    }else{
-        xhr.send();
+     }
+    else{
+        xhr.send(params);
     }
     
     xhr.onload = function() {
         var contentType = xhr.getResponseHeader('Content-Type');
-        // console.log(contentType);
+        console.log('-----',contentType);
+        //如果服务器返回的是json类型,需要将json字符串转化为json对象
         var responseText = xhr.responseText;
         if(contentType.includes('application/json')){
             responseText = JSON.parse(responseText);
         }   
         if(xhr.status == 200){
-            options.success(responseText,xhr);
+            defaults.success(responseText,xhr);
         }else{
-            options.error(xhr.responseText,xhr);
+            defaults.error(responseText,xhr);
         }
     }
+
 
 }
 
