@@ -6,6 +6,29 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <input type="text" name='' id='mytext' placeholder="请输入">
+    <button id="myadd">add</button>
+    <ul class="list">
+        <li></li>
+    </ul>
+    <script type="module">
+        import ajax from './js/tools.js'
+        // console.log(ajax);
+        
+
+        class Todolist {
+            constructor(select) {
+                this.list = document.querySelector(select)
+                
+            } 
+        }
+        
+        let todolist = new Todolist('.list')
+        console.log(todolist);
+        
+
+    </script>
+
+
 </body>
 </html>
