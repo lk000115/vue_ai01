@@ -62,7 +62,4 @@ function ajax(options) {
 
 }
 
-// module.exports = {
-//     ajax,
-// }
-
+export default ajax;
