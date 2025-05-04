@@ -53,9 +53,9 @@ function ajax(options) {
             responseText = JSON.parse(responseText);
         }   
         if(xhr.status == 200){
-            defaults.success(responseText,xhr);
+            defaults.success(responseText);
         }else{
-            defaults.error(responseText,xhr);
+            defaults.error(responseText);
         }
     }
 
