@@ -11,30 +11,30 @@ function ajax(options) {
         error: function() {},
         ...options
     }
-    console.log(defaults);
-     
+    // console.log(defaults);
+     let {method,url,data,header,success,error} = defaults;
     var xhr = new XMLHttpRequest();
     var params = '';
-    for (var attr in defaults.data) {
+    for (var attr in data) {
         //将参数拼接成字符串,格式为:key=value&key=value
-        params += attr + '=' + defaults.data[attr] + '&';
+        params += attr + '=' + data[attr] + '&';
     }
     //去掉字符串最后一个&
     params = params.substring(0, params.length - 1);
     //如果是get请求,将参数拼接到url后面
-    if (defaults.method == 'GET') {
-        defaults.url = defaults.url + "?" + params;
+    if (method == 'GET') {
+        url = url + "?" + params;
     }    
-    xhr.open(defaults.method, defaults.url , true);     
+    xhr.open(method,url , true);     
 
-    if(defaults.method == 'POST'){
+    if(method == 'POST'){
         //用户希望传递的请求头信息类型
-        var contentType = defaults.header['Content-Type'];
+        var contentType = header['Content-Type'];
         // console.log('contentType',contentType);
         xhr.setRequestHeader('Content-Type', contentType);
         //如果用户传递的是json类型,需要将json对象转化为字符串
         if (contentType == 'application/json') {
-            xhr.send(JSON.stringify(defaults.data)) 
+            xhr.send(JSON.stringify(data)) 
         }else{
 
             xhr.send(params);
@@ -53,13 +53,13 @@ function ajax(options) {
             responseText = JSON.parse(responseText);
         }   
         if(xhr.status == 200){
-            defaults.success(responseText);
+            success(responseText);
         }else{
-            defaults.error(responseText);
+            error(responseText);
         }
     }
 
 
 }
 
-export default ajax;
+// export default ajax;

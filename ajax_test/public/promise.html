@@ -4,22 +4,46 @@
     <!-- <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <title>Document</title>
+    <script src="./js/tools.js"></script>    
+
 </head>
 <body>
     
    <script type="text/javascript">
+     
+    //   let p = new Promise((resolve,reject)=>{
+    //     setTimeout(()=>{
+    //         reject('失败')
+    //     },1000)
+    //   })
 
-      let p = new Promise((resolve,reject)=>{
-        setTimeout(()=>{
-            reject('失败')
-        },1000)
-      })
+    //   p.then(res=>{
+    //     console.log(res);
+    //   }).catch(err=>{
+    //     console.log(err);
+    //   })
 
-      p.then(res=>{
-        console.log(res);
-      }).catch(err=>{
-        console.log(err);
-      })
+// 封装ajax为promise对象    
+   function pajax(options ){    
+    return new Promise((resolve,reject)=>{
+         ajax({
+           ...options,
+           success(res){
+            resolve(res)
+           },
+           error(err){
+            reject(err)  
+           }          
+         })    
+    }) 
+   }
+    
+    pajax({
+        url:'http://localhost:3000/news',
+        data:{author:"zhansan"},
+    }).then(res=>{
+        console.log(res); 
+    })
 
    </script>
 
