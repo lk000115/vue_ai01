@@ -4,10 +4,14 @@ function fn(obj){
         name:'zs',
         age:18,
         sex:'男',
+        success:()=>{   },
         ...obj
     }
      
-    console.log(default1);
+    let res = default1.name
+
+    default1.success(res);    
 }
 
-fn({name:'dddddd',age:20})
+fn({name:'dddddd',age:20,sex:"",success:(res)=>{console.log(res);
+}})
