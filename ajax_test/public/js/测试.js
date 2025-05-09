@@ -13,5 +13,11 @@ function fn(obj){
     default1.success(res);    
 }
 
-fn({name:'dddddd',age:20,sex:"",success:(res)=>{console.log(res);
-}})
+// fn({name:'dddddd',age:20,sex:"",success:(res)=>{console.log(res);
+// }})
+
+async  function test() {
+   await console.log(11111);   
+   console.log(2222);
+}
+test()
