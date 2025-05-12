@@ -38,18 +38,28 @@
     }) 
    }
     
-    pajax({
+    // pajax({
+    //     url:'http://localhost:3000/news',
+    //     data:{author:"zhansan"},
+    // }).then(res=>{
+    //     // console.log(res[0]); 
+    //     return pajax({
+    //         url:'http://localhost:3000/comments' ,
+    //         data:{newsid:res[0].id}
+    //     })
+    // }).then(res=>{
+    //     console.log(res);
+    // })
+
+   async function test(){
+    let res = await pajax({
         url:'http://localhost:3000/news',
         data:{author:"zhansan"},
-    }).then(res=>{
-        // console.log(res[0]); 
-        return pajax({
-            url:'http://localhost:3000/comments' ,
-            data:{newsid:res[0].id}
-        })
-    }).then(res=>{
-        console.log(res);
-    })
+    }) 
+    console.log(res);
+   }
+
+   test()
 
    </script>
 
