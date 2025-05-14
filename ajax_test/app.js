@@ -18,7 +18,7 @@ app.use(cors());
 // 静态文件目录
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 定义路由
+// 定义路由,路由就是匹配url后执行相应回调函数
 app.get('/first', (req, res) => {
   res.send(req.query);
 });
