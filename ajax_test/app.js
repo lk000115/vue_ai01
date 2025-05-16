@@ -24,6 +24,7 @@ app.use(cors());
 // 静态文件目录,public目录下的文件可以直接访问,比如  http://localhost:3000/ajax02.html
 app.use(express.static(path.join(__dirname, 'public')));
 
+//路由中间件
 app.use('/db', require('./public/js/DbRouter'));
 
 // 定义路由,路由就是匹配url后执行相应回调函数
