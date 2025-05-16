@@ -55,4 +55,5 @@
 
 4 express 连接sqlite数据库
   安装express和sqlite3    npm install express sqlite3
-     
+5 文件上传中间件 multer
+  安装multer  npm install multer     
