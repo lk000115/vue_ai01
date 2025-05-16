@@ -53,3 +53,6 @@
   html和数据拼接在服务器段,用npm安装art-template
   htmp和数据拼接在客户端,安装浏览器端template-web.js
 
+4 express 连接sqlite数据库
+  安装express和sqlite3    npm install express sqlite3
+     
