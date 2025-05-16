@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 var router = express.Router();
+// 引入数据库模块,连接数据库SQLITE3
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database(path.join(__dirname,'../db/test.sqlite3'));
 

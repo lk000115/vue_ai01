@@ -15,7 +15,13 @@ app.use(express.json());
 // 允许跨域
 app.use(cors());
 
-// 静态文件目录
+//定义应用中间件函数
+ function myLog(req, res, next) {
+    console.log('LOGGED');
+    next();
+  }  
+
+// 静态文件目录,public目录下的文件可以直接访问,比如  http://localhost:3000/ajax02.html
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/db', require('./public/js/DbRouter'));
@@ -25,7 +31,7 @@ app.get('/first', (req, res) => {
   res.send(req.query);
 });
 
-app.get('/get', (req, res) => {
+app.get('/get',myLog, (req, res) => {
   res.send(req.query);
 })
 
