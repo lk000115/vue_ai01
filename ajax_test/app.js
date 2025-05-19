@@ -5,6 +5,12 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require("body-parser");   //引入body-parser模块,解析post请求的参数
 const app = express();
+const multer = require('multer');
+
+//把上传的文件存放此临时目录
+const upload = multer({ dest: './public/upload/temp' });
+app.use(upload.any());
+
 
 // 解析 application/x-www-form-urlencoded 类型的请求体
 // app.use(bodyParser.urlencoded());
