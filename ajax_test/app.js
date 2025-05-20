@@ -27,7 +27,7 @@ app.use(cors());
     next();
   }  
 
-// 静态文件目录,public目录下的文件可以直接访问,比如  http://localhost:3000/ajax02.html
+// 静态文件目录,public目录下的文件可以直接通过ip地址根目录访问,比如  http://localhost:3000/ajax02.html
 app.use(express.static(path.join(__dirname, 'public')));
 
 //路由中间件
