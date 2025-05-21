@@ -4,6 +4,7 @@ const app = express();
 const port = 3000;
 const cors = require('cors');
 
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 app.use("/db",require("./public/js/messRouter"));
