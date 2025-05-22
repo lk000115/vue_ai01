@@ -8,17 +8,38 @@
 <body>
     <script src="./js/vue3.5.14.js"></script>
 
-<div id="app">{{ message }}</div>
+<div id="app">
+    <div>
+        <input type="text" v-model="title"  placeholder="请输入标题" />
+    </div>
+    <div>
+        <textarea v-model="content" cols="30" rows="10" placeholder="请输入内容"></textarea>
+    </div>
+    <div>
+        <button @click="add">提交</button>
+    </div>
+    <div>
+      {{title}}------{{content}}
+    </div>
+  
+</div>
 
 <script>
   const { createApp, ref } = Vue
 
   createApp({
     setup() {
-      const message = ref('Hello vue!??????')
+      const title = ref('')
+      const content = ref('')
       return {
-        message:message,
+         title:title,
+         content:content,
+         add () {
+            console.log(title.value,content.value);
+         }
+
       }
+
     }
   }).mount('#app')
 </script>
