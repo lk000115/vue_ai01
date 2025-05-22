@@ -16,7 +16,10 @@ router.get("/test", (req,res)=> {
 
 })
 
-
+router.post("/add", (req,res)=> {
+    let message = req.body;
+    res.send(message); 
+})
 
 
 
