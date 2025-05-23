@@ -18,7 +18,23 @@ router.get("/test", (req,res)=> {
 
 router.post("/add", (req,res)=> {
     let message = req.body;
-    res.send(message); 
+    db.run("INSERT INTO message ('id', 'title', 'content','creat_time') VALUES (?,?,?,?)", [new Date().getTime(), message.title, message.content, new Date().getTime()], 
+        (err,rows)=> {
+        if(err == null) {
+            res.send({
+                "code": 200,
+                "message": "数据添加成功"
+            })
+        }else{
+             res.send({
+                "code": 500,
+                "message": "数据失败"
+            })
+        }
+            
+        }   
+    )
+
 })
 
 
