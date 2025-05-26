@@ -27,7 +27,7 @@
 </div>
 
 <script>
-  const { createApp, ref } = Vue
+  const { createApp, ref,onMounted } = Vue
 
   createApp({
     setup() {
@@ -48,6 +48,11 @@
          }
 
       }
+
+      onMounted(() => {
+         console.log('页面加载完成');
+           
+        })
 
     }
   }).mount('#app')
