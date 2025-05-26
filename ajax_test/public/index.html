@@ -38,7 +38,7 @@
          content:content,
          add () {
             // console.log(title.value,content.value);
-            axios.post('http://localhost:3000/db/add', {
+            axios.post('/db/add', {
                 title: title.value,
                 content: content.value
           })
