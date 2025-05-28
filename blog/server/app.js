@@ -16,7 +16,7 @@ app.use(upload.any());
 
 
 
-// app.use(express.static())
+ app.use('/db', require('./routers/TestRouter'));
 
 app.get("/", (req, res)=> {
     res.send("Hello World");
