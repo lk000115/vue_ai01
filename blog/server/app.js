@@ -17,6 +17,7 @@ app.use(upload.any());
 
 
  app.use('/db', require('./routers/TestRouter'));
+ app.use("/admin", require('./routers/AdminRouter'))
 
 app.get("/", (req, res)=> {
     res.send("Hello World");
