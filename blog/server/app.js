@@ -16,8 +16,11 @@ app.use(upload.any());
 
 
 
- app.use('/db', require('./routers/TestRouter'));
- app.use("/admin", require('./routers/AdminRouter'))
+app.use('/db', require('./routers/TestRouter'));
+app.use("/admin", require('./routers/AdminRouter'))
+app.use("/category", require('./routers/CategoryRouter'))
+app.use("/blog", require("./routers/BlogRouter"));
+
 
 app.get("/", (req, res)=> {
     res.send("Hello World");
