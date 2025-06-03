@@ -3,12 +3,12 @@ const router = express.Router();
 const {db,genid} = require("../db/DbUtils");
 
 //查询接口 /blog/list
-router.get("/list", async (req, res)=>{
+router.get("/search", async (req, res)=>{
     let {keyword,categoryid,page,pagesize} = req.query;
     //验证输入,设置默认值
     page = page == null ? 1 : page;
-    pagesize = page == null ? 10 : page;
-    categoryid = categoryid == null ? 0 : category ;
+    pagesize = pagesize == null ? 10 : pagesize;
+    categoryid = categoryid == null ? 0 : categoryid ;
     keyword = keyword == null ? "" : keyword ;
     
     let params = [] ;
@@ -18,8 +18,8 @@ router.get("/list", async (req, res)=>{
         whereSqls.push("category_id = ?") ;
         params.push(categoryid) ;
     }
-    if(keyword != null) {
-        whereSqls.push("title like ? or content like ? ") ;
+    if(keyword != "") {
+        whereSqls.push("title LIKE ? or content LIKE ? ") ;
         params.push("%"+keyword+"%") ;
         params.push("%"+keyword+"%");
     }
@@ -28,10 +28,11 @@ router.get("/list", async (req, res)=>{
     if(whereSqls.length > 0) {
         whereSqlStr = "where " + whereSqls.join(" and ") ;
     }
-   
-    let search_sql = "select * from blog " + 'order by create_time ' + whereSqlStr + " limit ? ,?"
+    
+    let search_sql = "select * from blog " + whereSqlStr + 'order by create_time '  + "DESC LIMIT ? ,?"
     let serach_sql_params = params.concat([(page-1)*pagesize,pagesize]) ;
-
+    
+ 
     let search_count_sql = "select count(*) as total from blog " + whereSqlStr ;
     let search_count_params = params ;
  
@@ -39,7 +40,7 @@ router.get("/list", async (req, res)=>{
     let searchCountResult = await db.async.all(search_count_sql,search_count_params);
     
 
-    if(err == null) {
+    if(searchResult.err == null) {
         res.send({
              code: 200,
              msg: "查询成功",
