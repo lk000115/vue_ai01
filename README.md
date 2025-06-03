@@ -57,3 +57,12 @@
   安装express和sqlite3    npm install express sqlite3
 5 文件上传中间件 multer
   安装multer  npm install multer     
+
+6 前端渲染和后端渲染
+  前端渲染: 数据请求和渲染都在前端完成,
+  后端渲染: 数据请求和渲染都在后端完成,
+  区别:
+    1. 数据请求: 前端渲染需要前端发送请求,后端渲染需要后端发送请求
+       前端渲染用 res.send() res.json() 等方法,后端向前端返回json数据,前端收到数据后渲染页面 
+       后端渲染用 res.render() 方法 
+    2. 渲染: 前端渲染需要前端渲染,后端渲染需要后端渲染  
