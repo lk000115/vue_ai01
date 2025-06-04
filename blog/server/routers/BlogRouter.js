@@ -19,7 +19,7 @@ router.get("/search", async (req, res)=>{
         params.push(categoryid) ;
     }
     if(keyword != "") {
-        whereSqls.push("title LIKE ? or content LIKE ? ") ;
+        whereSqls.push("(title LIKE ? or content LIKE ? )") ;
         params.push("%"+keyword+"%") ;
         params.push("%"+keyword+"%");
     }

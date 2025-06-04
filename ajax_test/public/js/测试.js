@@ -30,14 +30,17 @@
 // }
 // test()
 
-// console.log(process.cwd())
+console.log(process.cwd())
 
-function fn(a,b) {
+// function fn(a,b) {
 
-    a = a == null ? 1 : a;
-    b = b == null ? 0 : b;
-    console.log(` a = ${a}  ---    b = ${b}`);
-    
-}
+//     a = a == null ? 1 : a;
+//     b = b == null ? 0 : b;
+//     console.log(` a = ${a}  ---    b = ${b}`); 
+// }
+// fn(null,8)
 
-fn(null,8)
+// let  str = "addsdf.sd"
+
+// console.log(str.lastIndexOf('.'));
+
