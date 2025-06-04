@@ -16,6 +16,18 @@ app.use(upload.any());
 //设置静态文件目录
 app.use(express.static(path.join(__dirname, 'public')))
 
+//登陆验证中间件
+app.all("*", (req, res, next) => {
+    //获取请求头中的token
+    let token = req.get("Authorization");
+    //验证token是否正确
+    if (token == "admin") {
+        next();
+    } else {
+        res.send({ code: 401, msg: "请先登陆" })
+    }
+})
+
 app.use('/db', require('./routers/TestRouter'));
 app.use("/admin", require('./routers/AdminRouter'))
 app.use("/category", require('./routers/CategoryRouter'))
