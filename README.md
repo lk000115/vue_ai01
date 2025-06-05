@@ -67,3 +67,12 @@
        前端渲染用 res.send() res.json() 等方法,后端向前端返回json数据,前端收到数据后渲染页面 
        后端渲染用 res.render() 方法 
     2. 渲染: 前端渲染需要前端渲染,后端渲染需要后端渲染  
+
+/**
+ * 需要安装的插件
+ * axios  pinia  sass 
+ * vue-router   npm install vue-router@4
+ * naive-ui  框架  npm i -D naive-ui
+ * npm i -D vfonts  字体
+ * wangEditor 富文本编辑器    npm install @wangeditor/editor-for-vue@next --save
+ */

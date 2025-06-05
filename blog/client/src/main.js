@@ -1,19 +1,14 @@
+import naive from 'naive-ui'
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
+import {router} from "./common/router.js" 
+import {createPinia} from "pinia";
+import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:3000'
 
-/**
- * 需要安装的插件
- * axios  pinia  sass 
- * vue-router   npm install vue-router@4
- * naive-ui  框架  npm i -D naive-ui
- * npm i -D vfonts  字体
- * wangEditor 富文本编辑器    npm install @wangeditor/editor-for-vue@next --save
- */
-
-
-
-
-
-
-createApp(App).mount('#app')
+const app = createApp(App)
+app.use(router)
+app.use(naive)
+app.use(createPinia())
+app.mount('#app')
