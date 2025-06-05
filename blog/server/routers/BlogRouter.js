@@ -59,7 +59,7 @@ router.get("/search", async (req, res)=>{
 })
 
 //添加接口 /blog/add
-router.post("/add", async (req, res)=>{
+router.post("/_token/add", async (req, res)=>{
     let {title,categoryid,content} = req.body;
     let id = genid.NextId();
     let create_time = new Date().getTime();
@@ -76,7 +76,7 @@ router.post("/add", async (req, res)=>{
 
 //修改接口 /blog/update
 
-router.put("/update", async (req, res)=>{
+router.put("/_token/update", async (req, res)=>{
     let {id,title,categoryid,content} = req.body;
     let create_time = new Date().getTime();
     const update_sql = "update blog set category_id=?,title=?,content=?,create_time=? where id=?"
@@ -91,7 +91,7 @@ router.put("/update", async (req, res)=>{
 })
 
 //删除接口 /blog/delete?id=****
-router.delete("/delete", async (req, res)=>{
+router.delete("/_token/delete", async (req, res)=>{
     let id = req.query.id;
     const delete_sql = "delete from blog  where id=?"
     let {err,rows} = await db.async.run(delete_sql,[id]);

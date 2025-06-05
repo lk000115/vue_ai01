@@ -30,7 +30,7 @@
 // }
 // test()
 
-console.log(process.cwd())
+// console.log(process.cwd())    //运行本文件的当前目录
 
 // function fn(a,b) {
 
@@ -40,7 +40,7 @@ console.log(process.cwd())
 // }
 // fn(null,8)
 
-// let  str = "addsdf.sd"
+let  str = "addsdf.sd"
 
-// console.log(str.lastIndexOf('.'));
+console.log(str.indexOf('e'));
 

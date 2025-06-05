@@ -3,7 +3,7 @@ const router = express.Router();
 const {db,genid} = require("../db/DbUtils");
 
 //添加接口 /catagory/add
-router.post("/add", async (req, res)=>{
+router.post("/_token/add", async (req, res)=>{
     let {name} = req.body;
     const insert_sql = "insert into category ('id','name') values (?,?)"
     let {err,rows} = await db.async.run(insert_sql,[genid.NextId(),name]);
@@ -16,7 +16,7 @@ router.post("/add", async (req, res)=>{
 })
 
 //修改接口 /catagory/update
-router.put("/update", async (req, res)=>{
+router.put("/_token/update", async (req, res)=>{
     let {name,id} = req.body;
     const insert_sql = "update category set name=? where id=?"
     let {err,rows} = await db.async.run(insert_sql,[name,id]);
@@ -29,7 +29,7 @@ router.put("/update", async (req, res)=>{
 })
 
 //删除接口 /catagory/delete?id=****
-router.delete("/delete", async (req, res)=>{
+router.delete("/_token/delete", async (req, res)=>{
     let id = req.query.id;
     const delete_sql = "delete from category  where id=?"
     let {err,rows} = await db.async.run(delete_sql,[id]);

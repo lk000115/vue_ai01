@@ -4,6 +4,7 @@ const cors = require("cors");
 const multer = require("multer");
 const port = 3000;
 const path = require("path");
+const {db,genid} = require("./db/DbUtils");
 
 //处理跨域
 app.use(cors());
@@ -17,15 +18,25 @@ app.use(upload.any());
 app.use(express.static(path.join(__dirname, 'public')))
 
 //登陆验证中间件
-app.all("*", (req, res, next) => {
-    //获取请求头中的token
-    let token = req.get("Authorization");
-    //验证token是否正确
-    if (token == "admin") {
+const ADMIN_TOKEN_PATH = "/_token";
+app.all("*",  async(req, res, next) => {
+    if(req.path.indexOf(ADMIN_TOKEN_PATH) > -1) {
+        let{token} = req.body;
+        let admin_token_sql = "select * from admin where token = ?";
+        let adminResult = await db.async.all(admin_token_sql, [token]);
+        if(adminResult.err != null || adminResult.rows.length == 0) {
+            res.send({
+                code: 403,
+                msg: "请先登录"
+            })
+        }else{
+            next();
+        }
+
+    }else{
         next();
-    } else {
-        res.send({ code: 401, msg: "请先登陆" })
     }
+
 })
 
 app.use('/db', require('./routers/TestRouter'));
