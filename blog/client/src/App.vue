@@ -3,9 +3,6 @@
 </script>
 
 <template>
-      <n-button type="error">
-      Error
-    </n-button>
     <router-view></router-view>
   <div>
 
