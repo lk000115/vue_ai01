@@ -45,13 +45,16 @@ const rules = ref({
       { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
     ],
   });
-  const login = () => {
-    console.log('登录', admin.value);
+  const login = async () => {
+     let res = await axios.post('/admin/login', {
+      account: admin.value.account,
+      password: admin.value.password,});
+    console.log(res);
   };
 
 
 
-  
+
 
 </script>
 
