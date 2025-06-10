@@ -7,6 +7,8 @@ import {createPinia} from "pinia";
 import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:3000'
 
+//设置全局使用axios
+app.provide('axios', axios)
 const app = createApp(App)
 app.use(router)
 app.use(naive)
