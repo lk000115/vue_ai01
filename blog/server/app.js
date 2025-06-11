@@ -19,9 +19,11 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //登陆验证中间件
 const ADMIN_TOKEN_PATH = "/_token";
-app.all("*",  async(req, res, next) => {
+
+app.all('',  async (req, res, next) => {
     if(req.path.indexOf(ADMIN_TOKEN_PATH) > -1) {
-        let{token} = req.body;
+        let { token } = req.headers;
+
         let admin_token_sql = "select * from admin where token = ?";
         let adminResult = await db.async.all(admin_token_sql, [token]);
         if(adminResult.err != null || adminResult.rows.length == 0) {
@@ -29,6 +31,7 @@ app.all("*",  async(req, res, next) => {
                 code: 403,
                 msg: "请先登录"
             })
+            return
         }else{
             next();
         }

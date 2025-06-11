@@ -49,7 +49,7 @@ const rules = ref({
      let res = await axios.post('/admin/login', {
       account: admin.value.account,
       password: admin.value.password,});
-    console.log(res);
+      console.log(res.data);
   };
 
 
