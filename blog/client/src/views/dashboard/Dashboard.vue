@@ -3,11 +3,15 @@
      <div class="menus">
         <div v-for="(menu, index) in menus" :key="index" @click="router.push(menu.href)">
             {{ menu.name }}
-            
-        </div>
-         
+
+       </div>     
      </div> 
+     <div stlye=" padding: 20px; width: 100%;">
+         <router-view></router-view>
+
+     </div>
 </div>
+<div class="title">后台管理系统</div>
 </template>
 
 
@@ -57,5 +61,14 @@ let menus = [
            
     }
 
+}
+
+.title {
+    font-size: 65px;
+    font-weight: bold;
+    text-align: right;
+    position: fixed;
+    color:rgba(0,0,0,.205);
+    bottom:20px;
 }
 </style> 
