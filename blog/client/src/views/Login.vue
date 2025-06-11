@@ -27,13 +27,20 @@
 
 <script   setup>
 import{ref,inject} from 'vue';
+import { AdminStore } from '../stores/AdminStore';
+import { useRouter,useRoute } from 'vue-router';
 
+const router = useRouter();
+const route = useRoute();
+
+const adminStore = AdminStore();
 const axios = inject('axios');
+const message = inject('message');
 
 const admin = ref({
-    account: '',
-    password: '',
-    rember: false,
+    account: localStorage.getItem('account') || '',
+    password: localStorage.getItem('password') || '',
+    rember: localStorage.getItem('rember') == 1 || false,
 });
 const rules = ref({
     account: [
@@ -49,7 +56,22 @@ const rules = ref({
      let res = await axios.post('/admin/login', {
       account: admin.value.account,
       password: admin.value.password,});
-      console.log(res.data);
+      // console.log(res.data);
+      if (res.data.code === 200) {
+          adminStore.token = res.data.data.token;
+          adminStore.account = res.data.data.account;
+          adminStore.id = res.data.data.id;  
+          if(admin.value.rember){
+              localStorage.setItem('account', admin.value.account);
+              localStorage.setItem('password', admin.value.password);
+              localStorage.setItem('rember', admin.value.rember?1:0);
+            
+          }
+          router.push({ path: '/dashboard' });
+          message.info('登录成功');
+      }else{
+          message.error("登录失败，请检查账号或密码");  
+      }
   };
 
 
