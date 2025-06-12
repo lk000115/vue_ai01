@@ -1,7 +1,7 @@
 <template>
 <div class="main-panel">
      <div class="menus">
-        <div v-for="(menu, index) in menus" :key="index" @click="router.push(menu.href)">
+        <div v-for="(menu, index) in menus" :key="index" @click="toPage(menu)" >
             {{ menu.name }}
 
        </div>     
@@ -30,8 +30,17 @@ const message = inject('message');
 let menus = [
     {name:'文章管理',href:'/dashboard/article'},
     {name:'分类管理',href:'/dashboard/category'},
-    {name:'退出',href:'/dashboard/logout'},
+    {name:'退出',href:'logout'},
 ]
+
+const toPage = (menu) => {
+    if(menu.href === 'logout') {
+        router.push('/login');
+    } else {
+        router.push(menu.href);
+
+    }
+}
 
 </script>
 

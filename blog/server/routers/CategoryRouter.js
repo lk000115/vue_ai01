@@ -48,9 +48,9 @@ router.get("/list", async (req, res)=>{
     let {err,rows} = await db.async.all(search_sql,[]);
 
     if(err == null) {
-        res.send({code: 200, msg: "修改成功",data:rows})
+        res.send({code: 200, msg: "获取数据成功",data:rows})
     }else{
-        res.send({code: 500, msg: "修改失败"})
+        res.send({code: 500, msg: "获取数据失败"})
     }
 })
 

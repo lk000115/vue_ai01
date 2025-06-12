@@ -4,7 +4,7 @@ let routes = [
    {path: '/login', component: () => import('../views/Login.vue')},
    {path: '/dashboard', component: () => import('../views/dashboard/Dashboard.vue'), 
        children:[
-        {path: 'categary', component: () => import('../views/dashboard/Categary.vue')},
+        {path: 'category', component: () => import('../views/dashboard/Category.vue')},
         {path: 'article', component: () => import('../views/dashboard/Article.vue')},
 
     
