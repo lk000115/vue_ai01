@@ -20,6 +20,7 @@ app.provide('axios', axios)
 app.provide('message', message)
 app.provide('dialog', dialog)
 app.provide('notification', notification)
+app.provide('server_url', axios.defaults.baseURL)
 
 app.use(router)
 app.use(naive)
