@@ -4,9 +4,9 @@
         <div v-for="(menu, index) in menus" :key="index" @click="toPage(menu)" >
             {{ menu.name }}
 
-       </div>     
+        </div>     
      </div> 
-     <div stlye=" padding: 20px; width: 100%;">
+     <div style="padding: 20px; width:100%;">
          <router-view></router-view>
 
      </div>
