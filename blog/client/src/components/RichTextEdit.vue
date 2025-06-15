@@ -41,13 +41,14 @@ editorConfig.MENU_CONF['uploadImage'] = {
   server: server_url+'/upload/refile',
 }
 
-
+//接受父组件的props数据
 const props = defineProps({
   modelValue: {
     type: String,
     default: 'heihei',}
   })
 
+//生命自定义事件update:modelValue
  const emit = defineEmits(['update:modelValue']); 
 
     let initFinished = false; // 初始化完成的标志
@@ -74,6 +75,7 @@ const props = defineProps({
     };
     const handleChange = (editor) => {
       // console.log('change:', editor.getHtml());
+      //触发自定义事件update:modelValue，并传值
       emit('update:modelValue', valueHtml.value);
     };
 
