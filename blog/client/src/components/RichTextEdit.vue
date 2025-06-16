@@ -32,7 +32,11 @@ const editorRef = shallowRef();
    // 内容 HTML
 const valueHtml = ref('文章内容');
 
- const toolbarConfig = {};
+ // 设置工具栏
+const toolbarConfig = {
+    excludeKeys: ["uploadVideo"] // 去除上传视频功能
+}
+
  const editorConfig = { placeholder: '请输入内容...' };
  //配置上传文件
  editorConfig.MENU_CONF = {}
