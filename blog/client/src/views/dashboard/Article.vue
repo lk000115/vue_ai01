@@ -3,7 +3,22 @@
 
      <n-tabs default-value="add"  justify-content="start" type="line">
         <n-tab-pane name="list" tab="博客列表">
-            类型1
+            <div v-for="(blog, index) in blogListInfo" style="margin-bottom: 15px;">
+                <n-card :title="blog.title">
+                    {{ blog.content }}
+                    <template #footer>
+                        <n-space align="center">
+                            <div>发布时间：{{ blog.create_time }}</div>
+                            <n-button @click="toUpdate(blog)">修改</n-button>
+                            <n-button @click="toDelete(blog)">删除</n-button>
+                        </n-space>
+                    </template>
+                </n-card>
+            </div> 
+
+
+
+
         </n-tab-pane>
 
         <n-tab-pane name="add" tab="添加文章">
@@ -50,6 +65,9 @@ const axios = inject('axios');
 const message = inject('message');
 const dialog = inject('dialog');
 
+const blogListInfo = ref([])
+
+
 const addArticle = reactive({
     categoryid: 0,
     title: '',
@@ -71,9 +89,23 @@ const add =  async ()=>{
 
 
 onMounted(() => {
+    // 获取文章列表
+    loadBlogs();
     // 获取文章分类
     loadCategorys();
 });
+
+const loadBlogs =  async ()=>{
+    const res = await axios.get('/blog/search');
+    if(res.data.code === 200) {
+        blogListInfo.value = res.data.data;
+    }
+    console.log(blogListInfo.value.rows);
+}
+
+
+
+
 
 const loadCategorys = async () => {
   
