@@ -100,7 +100,6 @@ const add = async () => {
     //在全局AXIOS设定的拦截器,添加了token,所以这里不需要再添加
     // const res = await axios.post('/category/_token/add', {name:addCategory.name},{headers:{token:adminStore.token}});
     const res = await axios.post('/category/_token/add', {name:addCategory.name});
-    // console.log(res.data); 
     if(res.data.code === 200) {
         loadDatas();
         message.info('添加成功');

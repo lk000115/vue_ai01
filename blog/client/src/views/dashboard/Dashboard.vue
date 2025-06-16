@@ -75,9 +75,10 @@ const toPage = (menu) => {
 .title {
     font-size: 65px;
     font-weight: bold;
-    text-align: right;
+    text-align:  center;
     position: fixed;
     color:rgba(0,0,0,.205);
     bottom:20px;
+    z-index:-1
 }
 </style> 
