@@ -29,7 +29,7 @@ router.post("/refile", async (req, res)=>{
             process.cwd() + '/public/upload/temp/' + file.filename,
             process.cwd() + '/public/upload/' + file_name,
          );
-         ret_files.push("/public/upload/" + file_name);
+         ret_files.push("/upload/" + file_name);
       } 
       
       res.send({

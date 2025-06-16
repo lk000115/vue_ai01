@@ -25,7 +25,7 @@
      </n-tabs>
 
 </n-card>
- {{ addArticle }}
+ {{ addArticle.content }}
 </template>
 
 <script   setup>

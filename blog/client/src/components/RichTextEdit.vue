@@ -26,21 +26,33 @@ import { onBeforeUnmount, ref, shallowRef, onMounted,inject } from 'vue';
 import { Editor, Toolbar } from  '@wangeditor/editor-for-vue';
 
 
-const server_url = inject('serverUrl'); // 从父组件注入 serverUrl
+const server_url = inject('server_url'); // 从父组件注入 serverUrl
 // 编辑器实例，必须用 shallowRef，重要！
-   const editorRef = shallowRef();
+const editorRef = shallowRef();
    // 内容 HTML
-    const valueHtml = ref('文章内容');
+const valueHtml = ref('文章内容');
 
  const toolbarConfig = {};
- const mode = ref('default'); // 或者 'simple'
-const editorConfig = { placeholder: '请输入内容...' };
-editorConfig.MENU_CONF = {}
-editorConfig.MENU_CONF['uploadImage'] = {
-  base64LimitSize: 10 * 1024, 
-  server: server_url+'/upload/refile',
-}
-
+ const editorConfig = { placeholder: '请输入内容...' };
+ //配置上传文件
+ editorConfig.MENU_CONF = {}
+ 
+ editorConfig.MENU_CONF['uploadImage'] = {
+   base64LimitSize: 10 * 1024, 
+   server: server_url + '/upload/refile',
+  }
+  
+  editorConfig.MENU_CONF['insertImage'] = {
+    parseImageSrc: (src) => {
+      // 处理图片 src，返回一个 Promise
+      if(src.indexOf('http') !==0 ) {
+        
+        return `${server_url}${src}`; // 如果是完整的 URL，直接返回
+      }
+      return src ;
+    }}
+    
+const mode = ref('default'); // 或者 'simple'
 
 const props = defineProps({
   modelValue: {
