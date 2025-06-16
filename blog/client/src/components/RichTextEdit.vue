@@ -33,6 +33,7 @@ const editorRef = shallowRef();
 const valueHtml = ref('文章内容');
 
  const toolbarConfig = {};
+<<<<<<< HEAD
  const editorConfig = { placeholder: '请输入内容...' };
  //配置上传文件
  editorConfig.MENU_CONF = {}
@@ -54,12 +55,24 @@ const valueHtml = ref('文章内容');
     
 const mode = ref('default'); // 或者 'simple'
 
+=======
+ const mode = ref('default'); // 或者 'simple'
+const editorConfig = { placeholder: '请输入内容...' };
+editorConfig.MENU_CONF = {}
+editorConfig.MENU_CONF['uploadImage'] = {
+  base64LimitSize: 10 * 1024, 
+  server: server_url+'/upload/refile',
+}
+
+//接受父组件的props数据
+>>>>>>> 319b364ce6f6e412a10097c070f68244a52b93b0
 const props = defineProps({
   modelValue: {
     type: String,
     default: 'heihei',}
   })
 
+//生命自定义事件update:modelValue
  const emit = defineEmits(['update:modelValue']); 
 
     let initFinished = false; // 初始化完成的标志
@@ -86,6 +99,7 @@ const props = defineProps({
     };
     const handleChange = (editor) => {
       // console.log('change:', editor.getHtml());
+      //触发自定义事件update:modelValue，并传值
       emit('update:modelValue', valueHtml.value);
     };
 
