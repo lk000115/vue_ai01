@@ -1,7 +1,7 @@
 <template>
  
 
-     <n-tabs default-value="add"  justify-content="start" type="line">
+     <n-tabs v-model:value="tableValue"  justify-content="start" type="line">
         <n-tab-pane name="list" tab="博客列表">
             <div v-for="(blog, index) in blogListInfo" style="margin-bottom: 15px;">
                 <n-card :title="blog.title">
@@ -17,7 +17,7 @@
             </div> 
             <n-space>
                 <div @click="toPage(pageNum)" v-for="pageNum in pageInfo.pageCount">
-                    <div >
+                    <div :style="'color:' + (pageNum == pageInfo.page ? 'red' : '')">
                         {{ pageNum }}
                     </div>
                 </div>
@@ -46,8 +46,21 @@
 
         </n-tab-pane>
 
-        <n-tab-pane name="lx3" tab="类型3">
-            leixin3
+        <n-tab-pane name="update" tab="修改文章">
+            <n-form :model="updateArticle">
+                <n-form-item label="标题">
+                    <n-input v-model:value="updateArticle.title" placeholder="请输入标题" />
+                </n-form-item>
+                <n-form-item label="分类">
+                    <n-select v-model:value="updateArticle.categoryId" :options="categoryOptions" />
+                </n-form-item>
+                <n-form-item label="内容">
+                    <RichTextEditor v-model="updateArticle.content" />
+                </n-form-item>
+                <n-form-item label="">
+                    <n-button @click="update">提交</n-button>
+                </n-form-item>
+            </n-form>
         </n-tab-pane>
      </n-tabs>
 
@@ -71,14 +84,23 @@ const dialog = inject('dialog');
 
 const blogListInfo = ref([])
 
-
+// 添加文章的数据
 const addArticle = reactive({
     categoryid: 0,
     title: '',
     content: ''
 });
 
+// 要修改的数据
+const updateArticle = reactive({
+    id: 0,
+    categoryId: 0,
+    title: "",
+    content: ""
+})
+
 const categoryOptions = ref([]);
+const tableValue = ref("list");
 
 const add =  async ()=>{
     console.log(addArticle);
@@ -107,6 +129,7 @@ onMounted(() => {
 });
 
 const loadBlogs =  async ()=>{
+    console.log(pageInfo);
     const res = await axios.get(`/blog/search?page=${pageInfo.page}&pageSize=${pageInfo.pageSize}`);
     let temp_rows = res.data.data.rows;
         for(let row of temp_rows) {
@@ -117,7 +140,7 @@ const loadBlogs =  async ()=>{
     blogListInfo.value = temp_rows;
     pageInfo.count = res.data.data.total // 列表总条数
     pageInfo.pageCount = parseInt(pageInfo.count / pageInfo.pageSize) + (pageInfo.count % pageInfo.pageSize > 0 ? 1 : 0) // 总页数
-    console.log(res,pageInfo);
+    console.log(res);
 }
 
 // 转至另一页
@@ -140,6 +163,39 @@ const loadCategorys = async () => {
 //    console.log(res.data);
    
 };
+
+const toUpdate = async (blog) => {
+    tableValue.value = "update"
+    let res = await axios.get("/blog/detail?id=" + blog.id)
+    // console.log(res)
+    updateArticle.id = blog.id
+    updateArticle.title = res.data.rows[0].title
+    updateArticle.content = res.data.rows[0].content
+    updateArticle.categoryId = res.data.rows[0].category_id
+}
+
+// 修改操作
+const update = async () => {
+    let res = await axios.put("/blog/_token/update", updateArticle)
+    if (res.data.code == 200) {
+        message.info(res.data.msg)
+        loadBlogs()
+        tableValue.value = "list"
+    } else {
+        message.error(res.data.msg)
+    }
+}
+
+
+const toDelete = async (blog) => {
+    let res = await axios.delete("/blog/_token/delete?id=" + blog.id)
+    if (res.data.code == 200) {
+        message.info(res.data.msg)
+        loadBlogs()
+    } else {
+        message.error(res.data.msg)
+    }
+}
 
 
 </script>

@@ -2,12 +2,36 @@ const express = require('express');
 const router = express.Router();
 const {db,genid} = require("../db/DbUtils");
 
+// 获取单个博客文章
+router.get("/detail", async (req, res) => {
+    let { id } = req.query
+    let detail_sql = "SELECT * FROM `blog` WHERE `id` = ? "
+    let { err, rows } = await db.async.all(detail_sql, [id])
+
+    if (err == null) {
+        res.send({
+            code: 200,
+            msg: "获取成功",
+            rows
+        })
+    } else {
+        res.send({
+            code: 500,
+            msg: "获取失败"
+        })
+    }
+})
+
+
 //查询接口 /blog/list
 router.get("/search", async (req, res)=>{
-    let {keyword,categoryid,page,pagesize} = req.query;
+    let {keyword,categoryid,page,pageSize} = req.query;
     //验证输入,设置默认值
+    console.log('qqqqqq---',pageSize);
+    
     page = page == null ? 1 : page;
-    pagesize = pagesize == null ? 10 : pagesize;
+    pageSize = pageSize == null ? 10 : pageSize;
+    console.log('hhhhhhhh---',pageSize);
     categoryid = categoryid == null ? 0 : categoryid ;
     keyword = keyword == null ? "" : keyword ;
     
@@ -30,7 +54,7 @@ router.get("/search", async (req, res)=>{
     }
     
     let search_sql = "select * from blog " + whereSqlStr + 'order by create_time '  + "DESC LIMIT ? ,?"
-    let serach_sql_params = params.concat([(page-1)*pagesize,pagesize]) ;
+    let serach_sql_params = params.concat([(page-1)*pageSize,pageSize]) ;
     
  
     let search_count_sql = "select count(*) as total from blog " + whereSqlStr ;
@@ -48,7 +72,7 @@ router.get("/search", async (req, res)=>{
                 keyword,
                 categoryid,
                 page,
-                pagesize,
+                pageSize,
                 rows:searchResult.rows,
                 total:searchCountResult.rows[0].total
              }
@@ -58,7 +82,7 @@ router.get("/search", async (req, res)=>{
     }
 })
 
-//添加接口 /blog/add
+//添加接口 /blog/_token/add
 router.post("/_token/add", async (req, res)=>{
     let {title,categoryid,content} = req.body;
     let id = genid.NextId();
@@ -74,7 +98,7 @@ router.post("/_token/add", async (req, res)=>{
     }
 })
 
-//修改接口 /blog/update
+//修改接口 /blog/_token/update
 
 router.put("/_token/update", async (req, res)=>{
     let {id,title,categoryid,content} = req.body;
@@ -90,7 +114,7 @@ router.put("/_token/update", async (req, res)=>{
     }
 })
 
-//删除接口 /blog/delete?id=****
+//删除接口 /blog/_token/delete?id=****
 router.delete("/_token/delete", async (req, res)=>{
     let id = req.query.id;
     const delete_sql = "delete from blog  where id=?"
