@@ -15,9 +15,13 @@
                     </template>
                 </n-card>
             </div> 
-
-
-
+            <n-space>
+                <div @click="toPage(pageNum)" v-for="pageNum in pageInfo.pageCount">
+                    <div >
+                        {{ pageNum }}
+                    </div>
+                </div>
+            </n-space>
 
         </n-tab-pane>
 
@@ -87,6 +91,13 @@ const add =  async ()=>{
    
 }
 
+// 分页 列表个数
+const pageInfo = reactive({
+    page: 1,
+    pageSize: 3,
+    pageCount: 0,
+    count: 0
+});
 
 onMounted(() => {
     // 获取文章列表
@@ -96,16 +107,24 @@ onMounted(() => {
 });
 
 const loadBlogs =  async ()=>{
-    const res = await axios.get('/blog/search');
-    if(res.data.code === 200) {
-        blogListInfo.value = res.data.data;
-    }
-    console.log(blogListInfo.value.rows);
+    const res = await axios.get(`/blog/search?page=${pageInfo.page}&pageSize=${pageInfo.pageSize}`);
+    let temp_rows = res.data.data.rows;
+        for(let row of temp_rows) {
+        row.content += '...';
+        let d = new Date(row.create_time);
+        row.create_time = `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+    }  
+    blogListInfo.value = temp_rows;
+    pageInfo.count = res.data.data.total // 列表总条数
+    pageInfo.pageCount = parseInt(pageInfo.count / pageInfo.pageSize) + (pageInfo.count % pageInfo.pageSize > 0 ? 1 : 0) // 总页数
+    console.log(res,pageInfo);
 }
 
-
-
-
+// 转至另一页
+const toPage = async (pageNum) => {
+    pageInfo.page = pageNum
+    loadBlogs()
+}
 
 const loadCategorys = async () => {
   
