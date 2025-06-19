@@ -31,6 +31,8 @@ const adminStore = AdminStore()
 //axios 请求拦截器
 axios.interceptors.request.use((config)=> {
     // 在发送请求之前做些什么
+    //login登陆时,系统检查帐号密码正确后.生成token,并存储在adminStore中,
+    //每次请求时,都从adminStore中取出token,并设置在请求头中
     config.headers.token = adminStore.token; // 设置token      
     return config;
   });

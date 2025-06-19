@@ -30,6 +30,7 @@ const message = inject('message');
 let menus = [
     {name:'文章管理',href:'/dashboard/article'},
     {name:'分类管理',href:'/dashboard/category'},
+    {name:'票据管理',href:'/dashboard/bill'},
     {name:'退出',href:'logout'},
 ]
 

@@ -1,4 +1,4 @@
-```vue:d:\code\vue_ai01\blog\client\src\views\test.vue
+
 <template>
   <div class="scanner-container">
     <video ref="videoElement" class="video-stream"></video>
