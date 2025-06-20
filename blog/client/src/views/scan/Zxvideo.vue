@@ -128,7 +128,7 @@ const startScanner = async () => {
     )
     
   } catch (err) {
-    console.error('启动扫描器失败:', err)
+    // console.error('启动扫描器失败:', err)
     error.value = '启动扫描器失败: ' + err.message
     isScanning.value = false
     
@@ -160,7 +160,7 @@ const stopScanner = () => {
 const onDecode = (result) => {
   // 存储原始数据
 //   rawData.value = result
-  console.log('解码结果:', result)
+//   console.log('解码结果:', result)
   try {
     // 按逗号分割数据
     const parts = result.split(',');
@@ -176,7 +176,7 @@ const onDecode = (result) => {
     scanned.value = true;
     isScanning.value = false;
   } catch (err) {
-    console.error('解析二维码失败，原始内容:', result, '错误信息:', err);
+    // console.error('解析二维码失败，原始内容:', result, '错误信息:', err);
     error.value = `解析二维码失败: ${err.message}`;
   }
 }
