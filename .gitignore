@@ -27,3 +27,5 @@ dist-ssr
 ./ajax_test/node_modules
 ./blog/server/node_modules
 ./blog/client/node_modules
+./invManagement/client/node_modules
+./invManagement/server/node_modules
