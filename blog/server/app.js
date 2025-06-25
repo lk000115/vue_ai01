@@ -1,8 +1,8 @@
 const express  = require("express");
 const app = express();
+const port = 3000;
 const cors = require("cors");
 const multer = require("multer");
-const port = 3000;
 const path = require("path");
 const {db,genid} = require("./db/DbUtils");
 
