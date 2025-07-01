@@ -3,6 +3,8 @@ const express  = require("express");
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 const cors = require("cors");
 app.use(cors());
@@ -13,6 +15,8 @@ app.get("/", (req, res)=> {
 })
 
 
+
+app.use('/inv',require('./routers/InvRouter'))
 
 
 
