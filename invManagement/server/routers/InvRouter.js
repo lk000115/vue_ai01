@@ -45,6 +45,19 @@ router.put('/update',async (req, res)=>{
     }
 })
 
+//删除接口 /inv/delete
+router.delete("/delete", async (req, res)=>{
+    let invNumber = req.query.invNumber;
+    const delete_sql = "delete from invList  where invNumber=?"
+    let {err,rows} = await db.async.run(delete_sql,[invNumber]);
+    if(err == null) {
+        res.send({code: 200, msg: "删除成功",data:rows})
+    }else{
+        res.send({code: 500, msg: "删除失败"})
+    }
+})
+
+
 
 
 
