@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require("../db/DbUtils");
 
-
+//查询接口   /inv/list
 router.get('/list',async (req, res)=>{
     let sql = "select * from invList"
     let {err,rows} = await db.async.all(sql)
@@ -13,8 +13,37 @@ router.get('/list',async (req, res)=>{
     }
 })
 
+//新增接口   /inv/add
 
+router.post('/add',async (req, res)=>{
+    let {invNumber,invAmount,invDate} = req.body
+    let createDate = new Date().getTime();
+    let sql = "insert into invList ('invNumber','invAmount','invDate','createDate') values(?,?,?,?)"
+    let paramas = [invNumber,invAmount,invDate,createDate];
+    let {err,rows} = await db.async.run(sql,paramas);
+    if(err == null) {
+        console.log(rows);
+        res.send({code: 200, msg: "添加成功---",data:rows})
+    }else{
+        res.send({code: 500, msg: "添加失败",data:err})
+    }
+})
 
+// 修改接口  /inv/update
+router.put('/update',async (req, res)=>{
+    let {invNumber,invAmount,invDate,invCompany,notes} = req.body
+    let createDate = new Date().getTime();
+    let update_sql = "update invList set invAmount=?,invDate=? ,createDate=? ,invCompany=?,notes=?  where invNumber=?"
+    let paramas = [invAmount,invDate,createDate,invCompany,notes,invNumber];
+    let {err,rows} = await db.async.run(update_sql,paramas);
+    if(err == null) {
+        console.log(rows);
+        res.send({code: 200, msg: "修改成功---",data:rows})
+
+    } else {
+        res.send({code: 500, msg: "修改失败",data:err})
+    }
+})
 
 
 
