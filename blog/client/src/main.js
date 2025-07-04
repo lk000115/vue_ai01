@@ -11,7 +11,7 @@ import { AdminStore } from './stores/AdminStore.js';
 axios.defaults.baseURL = 'http://localhost:3000'
 
 
-
+// 引入 naive-ui 消息组件,对话框组件
 const { message, dialog,notification} = createDiscreteApi(["message", "dialog","notification"]);
 
 //设置全局使用axios
