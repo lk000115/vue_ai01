@@ -45,7 +45,7 @@ router.put('/update',async (req, res)=>{
     }
 })
 
-//删除接口 /inv/delete
+//删除接口 /inv/delete?invNumber=***
 router.delete("/delete", async (req, res)=>{
     let invNumber = req.query.invNumber;
     const delete_sql = "delete from invList  where invNumber=?"
