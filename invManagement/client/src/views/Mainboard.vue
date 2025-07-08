@@ -13,12 +13,14 @@
 
 
 <script   setup>
+import {ref}  from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 let menus = [
     {name:'发票列表',href:'/mainboard/invlist'},
     {name:'发票扫描',href:'/mainboard/invscan'} 
 ]
+
 
 const toPage = (menu)=>{
       router.push(menu.href);
