@@ -33,18 +33,78 @@
     </tbody>
   </n-table>
 
+  <!-- 修改模态框--弹出框 -->
+   <n-modal v-model:show="showUpdateModal" preset="dialog" title="Dialog">
+    <template #header>
+      <div>修改分类</div>
+    </template>
+    <div>
+        <h3>发票号码: {{ updateInv.invNumber }}</h3>
+    </div>
+    <div>
+        <n-input v-model:value="updateInv.invCompany"  placeholder="请输入公司名称" type="text" /> 
+        <n-input v-model:value="updateInv.notes"  placeholder="请输入备注信息" type="text"  />
+    </div>
+    <template #action>
+      <div>
+        <n-button type="primary" @click="update"> 提交</n-button>
+      </div>
+    </template>
+  </n-modal> 
+
+
 </div>
 </template>
 
 
 <script   setup>
-import {ref}  from 'vue';
-let invList = ref([
-    {invNumber:1,invAmount:'发票1',invDate:'2023-01-01',createDate:123456,invCompany:'公司A',notes:'备注1'},
-    {invNumber:2,invAmount:'发票2',invDate:'2023-01-01',createDate:123456,invCompany:'公司B',notes:'备注2'},
-    {invNumber:3,invAmount:'发票3',invDate:'2023-01-01',createDate:123456,invCompany:'公司C',notes:'备注3'},
-    
-]);
+import{ref,inject,onMounted,reactive} from 'vue';
+const axios = inject('axios');
+const message = inject('message');
+const dialog = inject('dialog');
+
+const showUpdateModal = ref(false);
+const updateInv = reactive({
+    invNumber: '',
+    invCompany: '',
+    notes: ''
+});
+
+let invList = ref([]);
+
+onMounted(() => {
+    loadDatas();
+});
+
+const loadDatas = async () => {
+    let res = await axios.get("/inv/list");
+    //  console.log(res.data.data);
+    let temp_date = res.data.data;
+    // 格式化日期
+    temp_date.forEach(item => {
+        item.createDate = new Date(item.createDate).toLocaleDateString();
+    });
+    invList.value = temp_date;
+     
+}
+
+const toUpdate = (inv) => {
+    updateInv.invNumber = inv.invNumber;
+    updateInv.invCompany = inv.invCompany;
+    updateInv.notes = inv.notes;
+    showUpdateModal.value = true;
+};
+
+const update = async () => {
+    const res = await axios.put('/inv/update', {invNumber:updateInv.invNumber,invCompany:updateInv.invCompany,notes:updateInv.notes});
+    if(res.data.code === 200) {
+        loadDatas();
+        message.info('修改成功');
+    }else{
+        message.error(res.data.msg);
+    }
+    showUpdateModal.value= false;
+}
 
 
 </script>

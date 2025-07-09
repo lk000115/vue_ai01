@@ -31,10 +31,10 @@ router.post('/add',async (req, res)=>{
 
 // 修改接口  /inv/update
 router.put('/update',async (req, res)=>{
-    let {invNumber,invAmount,invDate,invCompany,notes} = req.body
+    let {invNumber,invCompany,notes} = req.body
     let createDate = new Date().getTime();
-    let update_sql = "update invList set invAmount=?,invDate=? ,createDate=? ,invCompany=?,notes=?  where invNumber=?"
-    let paramas = [invAmount,invDate,createDate,invCompany,notes,invNumber];
+    let update_sql = "update invList set  createDate=? ,invCompany=?,notes=?  where invNumber=?"
+    let paramas = [createDate,invCompany,notes,invNumber];
     let {err,rows} = await db.async.run(update_sql,paramas);
     if(err == null) {
         console.log(rows);

@@ -152,11 +152,6 @@ const catedelete = async (category) => {
               }
         });
 
-
- 
-
-
-
 }
 
 
