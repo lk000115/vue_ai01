@@ -5,9 +5,10 @@ const db = require("../db/DbUtils");
 //查询单个发票接口  /inv/detail?invNumber=***
 router.get('/detail',async (req, res)=>{
     let invNumber = req.query.invNumber;
+    console.log('invNumber---',invNumber);
     let sql = "select * from invList where invNumber=?"
-    let {err,rows} = await db.async.get(sql,[invNumber])
-    if(err == null) {
+    let {err,rows} = await db.async.all(sql,[invNumber])
+    if(err == null && rows.length > 0) {
         res.send({code: 200, msg: "查询成功",data:rows})
     } else {
         res.send({code: 500, msg: "查询失败"})
@@ -37,8 +38,8 @@ router.post('/add',async (req, res)=>{
     let sql = "insert into invList ('invNumber','invAmount','invDate','createDate') values(?,?,?,?)"
     let paramas = [invNumber,invAmount,invDate,createDate];
     let {err,rows} = await db.async.run(sql,paramas);
-    if(err == null) {
-        console.log(rows);
+    // console.log(rows);
+    if(err == null && invNumber.length > 0) {
         res.send({code: 200, msg: "添加成功---",data:rows})
     }else{
         res.send({code: 500, msg: "添加失败",data:err})

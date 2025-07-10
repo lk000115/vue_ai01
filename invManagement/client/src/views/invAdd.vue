@@ -26,6 +26,8 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { BrowserMultiFormatReader, Result } from '@zxing/library'
  
+const axios = inject('axios');
+const message = inject('message');
 const videoElement = ref(null)
 const scanned = ref(false)
 const isScanning = ref(false)
@@ -175,9 +177,26 @@ const onDecode = (result) => {
     };
     scanned.value = true;
     isScanning.value = false;
+    // 调用插入数据函数
+    insertInvoiceData(invoiceData.value);
   } catch (err) {
     // console.error('解析二维码失败，原始内容:', result, '错误信息:', err);
     error.value = `解析二维码失败: ${err.message}`;
+  }
+}
+
+// 处理扫码结果插入到数据库
+const insertInvoiceData = async (result) => {
+  try {
+    const res = await axios.post('/inv/add', result);
+    
+    if (res.data.code === 200) {
+      message.info('发票信息录入成功');
+    } else {
+      message.error('发票信息录入失败: ' + res.data.msg);
+    }
+  } catch (err) {
+    message.error('发票信息录入失败: ' + err.message);
   }
 }
 

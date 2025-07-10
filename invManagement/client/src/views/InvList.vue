@@ -99,7 +99,7 @@ const toUpdate = (inv) => {
 };
 
 const update = async () => {
-    const res = await axios.put('/inv/update', {invNumber:updateInv.invNumber,invCompany:updateInv.invCompany,notes:updateInv.notes});
+    const res = await axios.put('/inv/update', updateInv);
     if(res.data.code === 200) {
         loadDatas();
         message.info('修改成功');
