@@ -196,7 +196,7 @@ const insertInvoiceData = async (result) => {
       message.error('发票信息录入失败: ' + res.data.msg);
     }
   } catch (err) {
-    message.error('发票信息录入失败: ' + err.message);
+    message.error('发票重复录入或其他原因: ' + err.message);
   }
 }
 
