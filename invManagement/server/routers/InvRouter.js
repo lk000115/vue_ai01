@@ -2,6 +2,22 @@ const express = require('express');
 const router = express.Router();
 const db = require("../db/DbUtils");
 
+//查询单个发票接口  /inv/detail?invNumber=***
+router.get('/detail',async (req, res)=>{
+    let invNumber = req.query.invNumber;
+    let sql = "select * from invList where invNumber=?"
+    let {err,rows} = await db.async.get(sql,[invNumber])
+    if(err == null) {
+        res.send({code: 200, msg: "查询成功",data:rows})
+    } else {
+        res.send({code: 500, msg: "查询失败"})
+    }
+})
+
+
+
+
+
 //查询接口   /inv/list
 router.get('/list',async (req, res)=>{
     let sql = "select * from invList"
