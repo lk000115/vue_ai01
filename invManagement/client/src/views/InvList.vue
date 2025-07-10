@@ -1,6 +1,9 @@
 <template>
 <div >
-    发票明细
+   <div class="header"  >
+    <n-button class="nb">搜索</n-button>
+    <n-input class="ni"  placeholder="请输入搜索关键字" type="text" />
+   </div>
     <n-table :bordered="false" :single-line="false">
     <thead>
       <tr>
@@ -106,8 +109,45 @@ const update = async () => {
     showUpdateModal.value= false;
 }
 
+const todelete = async (inv) => {
+    // console.log(inv);
+          dialog.warning({
+          title: "警告",
+          content: "确认删除吗？",
+          positiveText: "删除",
+          negativeText: "不删除",
+          draggable: true,
+          onPositiveClick: async() => {
+           const res = await axios.delete(`/inv/delete?invNumber=${inv.invNumber}`);
+             if(res.data.code === 200) {
+               loadDatas();
+               message.info('删除成功');
+             }
+           },
+              onNegativeClick: () => {
+        
+              }
+        });
+    
+}
+
 
 </script>
 
-<style    scoped>
+<style  lang="scss"  scoped>
+.header {
+    padding:0 10px;
+    display: flex;
+
+    .nb{
+       margin-right: 10px;
+       flex-grow: 1; 
+    }
+    .ni {
+      width: 400px;
+       flex-grow: 10;
+    }
+}
+
+
 </style> 

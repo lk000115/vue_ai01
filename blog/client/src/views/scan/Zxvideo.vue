@@ -16,7 +16,7 @@
       <p>金额: {{ invoiceData.amount }}</p>
       <p>日期: {{ invoiceData.invoiceDate }}</p>
     </div>
-  </div>
+    </div>
 
 
 </template>
