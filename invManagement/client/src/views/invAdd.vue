@@ -166,6 +166,8 @@ const onDecode = (result) => {
   // 存储原始数据
 //   rawData.value = result
 //   console.log('解码结果:', result)
+ // 检查是否已经扫描成功，避免重复处理
+  if (scanned.value) return;
   try {
     // 按逗号分割数据
     const parts = result.split(',');
@@ -180,9 +182,10 @@ const onDecode = (result) => {
     };
     scanned.value = true;
     isScanning.value = false;
-        // 解码成功后停止扫描
-    stopScanner();
 
+    console.log('解析后的发票数据:', invoiceData.value);
+    
+   
     // 调用插入数据函数
     insertInvoiceData(invoiceData.value); 
    
@@ -195,6 +198,7 @@ const onDecode = (result) => {
 // 处理扫码结果插入到数据库
 const insertInvoiceData = async (result) => {
   try {
+    
     const res = await axios.post('/inv/add', result);
     
     if (res.data.code === 200) {
