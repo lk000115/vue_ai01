@@ -76,3 +76,22 @@
  * npm i -D vfonts  字体
  * wangEditor 富文本编辑器    npm install @wangeditor/editor-for-vue@next --save
  */
+
+
+
+### 在项目根目录下创建 .env.development（开发环境）和 .env.production（生产环境）文件。
+
+.env.development
+
+VITE_API_BASE_URL=http://192.168.1.190:3000
+
+.env.production
+
+VITE_API_BASE_URL=https://your-production-api-url.com
+
+
+ 在 main.js 中配置 axios
+
+
+// 根据环境变量动态配置基础 URL
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;

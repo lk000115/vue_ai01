@@ -35,6 +35,7 @@ router.get('/list',async (req, res)=>{
 router.post('/add',async (req, res)=>{
     let {invNumber,invAmount,invDate} = req.body
     let createDate = new Date().getTime();
+    console.log('invNumber---',invNumber);
     let sql = "insert into invList ('invNumber','invAmount','invDate','createDate') values(?,?,?,?)"
     let paramas = [invNumber,invAmount,invDate,createDate];
     let {err,rows} = await db.async.run(sql,paramas);

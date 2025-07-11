@@ -6,6 +6,7 @@ const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
 const cors = require("cors");
 app.use(cors());
 
@@ -14,13 +15,14 @@ app.get("/", (req, res)=> {
     res.send("Hello World");
 })
 
+// app.get('/list', (req, res) => {
+//   // 模拟返回数据
+//    res.send("Hello World-----");
+// });
 
 
 app.use('/inv',require('./routers/InvRouter'))
 
-
-
-//服务器启动并监听端口
 app.listen(port, () => {
-    console.log(`服务器已经启动:  http://localhost:${port}`)
-})
+    console.log(`Server is running at http://localhost:${port}`);
+});

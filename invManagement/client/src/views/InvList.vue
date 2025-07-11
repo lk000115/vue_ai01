@@ -80,16 +80,21 @@ onMounted(() => {
 });
 
 const loadDatas = async () => {
-    let res = await axios.get("/inv/list");
-    //  console.log(res.data.data);
-    let temp_date = res.data.data;
-    // 格式化日期
-    temp_date.forEach(item => {
-        item.createDate = new Date(item.createDate).toLocaleDateString();
-    });
-    invList.value = temp_date;
-     
-}
+    try {
+        // 使用相对路径
+        let res = await axios.get('/inv/list');
+        console.log('响应数据:', res.data);
+        let temp_date = res.data.data;
+        // 格式化日期
+        temp_date.forEach(item => {
+            item.createDate = new Date(item.createDate).toLocaleDateString();
+        });
+        invList.value = temp_date;
+    } catch (error) {
+        console.error('获取数据失败:', error);
+        message.error('获取数据失败，请检查网络连接');
+    }
+};
 
 const toUpdate = (inv) => {
     updateInv.invNumber = inv.invNumber;

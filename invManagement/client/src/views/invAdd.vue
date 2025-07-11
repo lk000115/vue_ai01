@@ -15,7 +15,9 @@
       <p>发票号码: {{ invoiceData.invNumber }}</p>
       <p>金额: {{ invoiceData.invAmount }}</p>
       <p>日期: {{ invoiceData.invDate }}</p>
+      
     </div>
+
     </div>
 
 
@@ -39,6 +41,7 @@ const invoiceData = ref({
 })
 // 新增原始数据的响应式变量
 // const rawData = ref('')
+const isDecoded = ref(false) // 新增解码成功标识
 
 let codeReader = null
 let videoStream = null
@@ -54,7 +57,9 @@ onBeforeUnmount(() => {
 const startScanner = async () => {
   try {
     stopScanner()
-    
+     // 重置状态
+    resetScanState();
+
     error.value = ''
     isScanning.value = true
     scanned.value = false
@@ -69,28 +74,8 @@ const startScanner = async () => {
         throw new Error('摄像头权限被拒绝，请在浏览器设置中重新授予权限');
       }
     }
-    // // 获取所有视频设备
-    // const devices = await navigator.mediaDevices.enumerateDevices();
-    // const videoDevices = devices.filter(device => device.kind === 'videoinput');
-    // let deviceId = null;
 
-    // // 尝试找到后置摄像头
-    // for (const device of videoDevices) {
-    //   if (device.label.toLowerCase().includes('back') || device.label.toLowerCase().includes('rear')) {
-    //     deviceId = device.deviceId;
-    //     break;
-    //   }
-    // }
-
-    // // 若未找到后置摄像头，使用第一个摄像头
-    // if (!deviceId && videoDevices.length > 0) {
-    //   deviceId = videoDevices[0].deviceId;
-    // }
-
-    // if (!deviceId) {
-    //   throw new Error('未找到可用的摄像头设备-----');
-    // }
-
+    // 获取摄像头视频流
     const stream = await navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: { ideal: 'environment' }, // 优先使用后置摄像头
@@ -114,9 +99,12 @@ const startScanner = async () => {
        undefined, // 不指定设备 ID，使用 stream
       videoElement.value,
       (result, error) => {
+        if (isDecoded.value) return // 如果已经解码成功，直接返回
         if (result) {
           console.log('解码成功:', result.text)
           onDecode(result.text)
+          isDecoded.value = true // 设置解码成功标识
+          stopScanner()
         }
         if (error && !(error instanceof Result)) {
           console.error('解码错误:', error)
@@ -145,6 +133,19 @@ const startScanner = async () => {
       videoElement.value.srcObject = null
     }
   }
+}
+
+// 重置扫描状态
+const resetScanState = () => {
+  scanned.value = false;
+  isScanning.value = false;
+  isDecoded.value = false;
+  error.value = '';
+  invoiceData.value = {
+    invNumber: '',
+    invAmount: '',
+    invDate: ''
+  };
 }
  
 const stopScanner = () => {
@@ -182,7 +183,8 @@ const onDecode = (result) => {
     };
     scanned.value = true;
     isScanning.value = false;
-
+    isDecoded.value = true // 设置解码成功标识
+   
     console.log('解析后的发票数据:', invoiceData.value);
     
    
@@ -198,16 +200,19 @@ const onDecode = (result) => {
 // 处理扫码结果插入到数据库
 const insertInvoiceData = async (result) => {
   try {
-    
-    const res = await axios.post('/inv/add', result);
-    
+    console.log('准备插入发票数据:', result);
+    const res = await axios.post('/inv/add', {invNumber: result.invNumber, invAmount: result.invAmount, invDate: result.invDate});
+    console.log(res.data);
     if (res.data.code === 200) {
       message.info('发票信息录入成功');
     } else {
       message.error('发票信息录入失败: ' + res.data.msg);
+      error.value = '发票重复,录入失败: ' + res.data.msg;
     }
   } catch (err) {
     message.error('发票重复录入或其他原因: ' + err.message);
+    // 重置扫描状态
+    resetScanState();
   }
 }
 
