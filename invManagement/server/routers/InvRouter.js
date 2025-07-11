@@ -5,7 +5,7 @@ const db = require("../db/DbUtils");
 //查询单个发票接口  /inv/detail?invNumber=***
 router.get('/detail',async (req, res)=>{
     let invNumber = req.query.invNumber;
-    console.log('invNumber---',invNumber);
+    // console.log('invNumber---',invNumber);
     let sql = "select * from invList where invNumber=?"
     let {err,rows} = await db.async.all(sql,[invNumber])
     if(err == null && rows.length > 0) {
@@ -35,7 +35,6 @@ router.get('/list',async (req, res)=>{
 router.post('/add',async (req, res)=>{
     let {invNumber,invAmount,invDate} = req.body
     let createDate = new Date().getTime();
-    console.log('invNumber---',invNumber);
     let sql = "insert into invList ('invNumber','invAmount','invDate','createDate') values(?,?,?,?)"
     let paramas = [invNumber,invAmount,invDate,createDate];
     let {err,rows} = await db.async.run(sql,paramas);

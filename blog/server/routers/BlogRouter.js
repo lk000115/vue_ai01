@@ -27,11 +27,9 @@ router.get("/detail", async (req, res) => {
 router.get("/search", async (req, res)=>{
     let {keyword,categoryid,page,pageSize} = req.query;
     //验证输入,设置默认值
-    console.log('qqqqqq---',pageSize);
     
     page = page == null ? 1 : page;
     pageSize = pageSize == null ? 10 : pageSize;
-    console.log('hhhhhhhh---',pageSize);
     categoryid = categoryid == null ? 0 : categoryid ;
     keyword = keyword == null ? "" : keyword ;
     
