@@ -23,7 +23,7 @@
 
 
 <script   setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount,inject } from 'vue'
 import { BrowserMultiFormatReader, Result } from '@zxing/library'
  
 const axios = inject('axios');
@@ -64,34 +64,36 @@ const startScanner = async () => {
     if (navigator.permissions && typeof navigator.permissions.query === 'function') {
       const permissionStatus = await navigator.permissions.query({ name: 'camera' });
       if (permissionStatus.state === 'denied') {
+        // 提示用户手动开启权限
+        message.error('摄像头权限被拒绝，请在浏览器设置中重新授予权限');
         throw new Error('摄像头权限被拒绝，请在浏览器设置中重新授予权限');
       }
     }
-    // 获取所有视频设备
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    const videoDevices = devices.filter(device => device.kind === 'videoinput');
-    let deviceId = null;
+    // // 获取所有视频设备
+    // const devices = await navigator.mediaDevices.enumerateDevices();
+    // const videoDevices = devices.filter(device => device.kind === 'videoinput');
+    // let deviceId = null;
 
-    // 尝试找到后置摄像头
-    for (const device of videoDevices) {
-      if (device.label.toLowerCase().includes('back') || device.label.toLowerCase().includes('rear')) {
-        deviceId = device.deviceId;
-        break;
-      }
-    }
+    // // 尝试找到后置摄像头
+    // for (const device of videoDevices) {
+    //   if (device.label.toLowerCase().includes('back') || device.label.toLowerCase().includes('rear')) {
+    //     deviceId = device.deviceId;
+    //     break;
+    //   }
+    // }
 
-    // 若未找到后置摄像头，使用第一个摄像头
-    if (!deviceId && videoDevices.length > 0) {
-      deviceId = videoDevices[0].deviceId;
-    }
+    // // 若未找到后置摄像头，使用第一个摄像头
+    // if (!deviceId && videoDevices.length > 0) {
+    //   deviceId = videoDevices[0].deviceId;
+    // }
 
-    if (!deviceId) {
-      throw new Error('未找到可用的摄像头设备');
-    }
+    // if (!deviceId) {
+    //   throw new Error('未找到可用的摄像头设备-----');
+    // }
 
     const stream = await navigator.mediaDevices.getUserMedia({
       video: {
-        deviceId: { exact: deviceId },
+        facingMode: { ideal: 'environment' }, // 优先使用后置摄像头
         width: { ideal: 640 },
         height: { ideal: 480 }
       }
@@ -108,7 +110,8 @@ const startScanner = async () => {
 
     // 调整解码器设置
  codeReader.decodeFromVideoDevice(
-      deviceId, // 使用 facingMode 而不是设备 ID
+      // deviceId, // 使用 facingMode 而不是设备 ID
+       undefined, // 不指定设备 ID，使用 stream
       videoElement.value,
       (result, error) => {
         if (result) {
@@ -177,8 +180,12 @@ const onDecode = (result) => {
     };
     scanned.value = true;
     isScanning.value = false;
+        // 解码成功后停止扫描
+    stopScanner();
+
     // 调用插入数据函数
-    insertInvoiceData(invoiceData.value);
+    insertInvoiceData(invoiceData.value); 
+   
   } catch (err) {
     // console.error('解析二维码失败，原始内容:', result, '错误信息:', err);
     error.value = `解析二维码失败: ${err.message}`;
