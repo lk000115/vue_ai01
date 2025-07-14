@@ -201,7 +201,7 @@ const onDecode = (result) => {
 const insertInvoiceData = async (result) => {
   try {
     console.log('准备插入发票数据:', result);
-    const res = await axios.post('/inv/add', {invNumber: result.invNumber, invAmount: result.invAmount, invDate: result.invDate});
+    const res = await axios.post('/api/add', {invNumber: result.invNumber, invAmount: result.invAmount, invDate: result.invDate});
     console.log(res.data);
     if (res.data.code === 200) {
       message.info('发票信息录入成功');

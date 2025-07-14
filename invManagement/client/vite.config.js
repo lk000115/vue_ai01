@@ -14,7 +14,7 @@ export default defineConfig({
     host: '192.168.1.190',
     port: 443,
     proxy: {
-      '/inv': {
+      '/api': {
         target: 'http://192.168.1.190:3000',
         changeOrigin: true,
         secure: false,

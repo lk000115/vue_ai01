@@ -82,7 +82,7 @@ onMounted(() => {
 const loadDatas = async () => {
     try {
         // 使用相对路径
-        let res = await axios.get('/inv/list');
+        let res = await axios.get('/api/list');
         console.log('响应数据:', res.data);
         let temp_date = res.data.data;
         // 格式化日期
@@ -104,7 +104,7 @@ const toUpdate = (inv) => {
 };
 
 const update = async () => {
-    const res = await axios.put('/inv/update', updateInv);
+    const res = await axios.put('/api/update', updateInv);
     if(res.data.code === 200) {
         loadDatas();
         message.info('修改成功');

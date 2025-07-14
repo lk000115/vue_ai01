@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require("../db/DbUtils");
 
-//查询单个发票接口  /inv/detail?invNumber=***
+//查询单个发票接口  /api/detail?invNumber=***
 router.get('/detail',async (req, res)=>{
     let invNumber = req.query.invNumber;
     // console.log('invNumber---',invNumber);
@@ -19,7 +19,7 @@ router.get('/detail',async (req, res)=>{
 
 
 
-//查询接口   /inv/list
+//查询接口   /api/list
 router.get('/list',async (req, res)=>{
     let sql = "select * from invList"
     let {err,rows} = await db.async.all(sql)
@@ -30,7 +30,7 @@ router.get('/list',async (req, res)=>{
     }
 })
 
-//新增接口   /inv/add
+//新增接口   /api/add
 
 router.post('/add',async (req, res)=>{
     let {invNumber,invAmount,invDate} = req.body
@@ -46,7 +46,7 @@ router.post('/add',async (req, res)=>{
     }
 })
 
-// 修改接口  /inv/update
+// 修改接口  /api/update
 router.put('/update',async (req, res)=>{
     let {invNumber,invCompany,notes} = req.body
     let createDate = new Date().getTime();
@@ -62,7 +62,7 @@ router.put('/update',async (req, res)=>{
     }
 })
 
-//删除接口 /inv/delete?invNumber=***
+//删除接口 /api/delete?invNumber=***
 router.delete("/delete", async (req, res)=>{
     let invNumber = req.query.invNumber;
     const delete_sql = "delete from invList  where invNumber=?"

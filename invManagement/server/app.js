@@ -21,7 +21,7 @@ app.get("/", (req, res)=> {
 // });
 
 
-app.use('/inv',require('./routers/InvRouter'))
+app.use('/api',require('./routers/InvRouter'))
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
