@@ -100,7 +100,7 @@
 
 
 <script   setup>
-import{ref,inject,onMounted,reactive} from 'vue';
+import{ref,inject,onMounted,reactive,computed} from 'vue';
 const axios = inject('axios');
 const message = inject('message');
 const dialog = inject('dialog');
@@ -146,7 +146,7 @@ onMounted(() => {
 
 const loadDatas = async () => {
   try {
-    const res = await axios.get('/search', {
+    const res = await axios.get('/api/search', {
       params: {
         invCompany: searchInvCompany.value,
         invNumber: searchInvNumber.value,
