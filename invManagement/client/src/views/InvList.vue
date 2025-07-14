@@ -1,9 +1,20 @@
 <template>
 <div >
-   <div class="header"  >
-    <n-button class="nb">搜索</n-button>
-    <n-input class="ni"  placeholder="请输入搜索关键字" type="text" />
-   </div>
+   <div class="header">
+      <n-button class="nb" @click="search">搜索</n-button>
+      <n-input
+        v-model:value="searchInvCompany"
+        class="ni"
+        placeholder="请输入开票公司"
+        type="text"
+      />
+      <n-input
+        v-model:value="searchInvNumber"
+        class="ni"
+        placeholder="请输入发票号码"
+        type="text"
+      />
+    </div>
     <n-table :bordered="false" :single-line="false">
     <thead>
       <tr>
@@ -35,6 +46,34 @@
 
     </tbody>
   </n-table>
+      <!-- 左下分页导航 -->
+    <div class="pagination-left">
+      <n-button @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
+        <
+      </n-button>
+      <div v-for="page in visiblePages" :key="page" @click="changePage(page)">
+        <div :style="'color:' + (page === currentPage ? 'red' : '')">
+          {{ page }}
+        </div>
+      </div>
+      <div v-if="pageCount > lastVisiblePage" @click="changePage(currentPage + 1)">
+        ...
+      </div>
+    </div>
+    <!-- 右下前往指定页和总页数信息 -->
+    <div class="pagination-right">
+      <span>前往</span>
+      <n-input
+        v-model:value="goToPage"
+        type="number"
+        :min="1"
+        :max="pageCount"
+        style="width: 50px; margin: 0 5px"
+      />
+      <n-button @click="goToSpecificPage">页</n-button>
+      <span>共 {{ pageCount }} 页</span>
+    </div>
+
 
   <!-- 修改模态框--弹出框 -->
    <n-modal v-model:show="showUpdateModal" preset="dialog" title="Dialog">
@@ -74,26 +113,81 @@ const updateInv = reactive({
 });
 
 let invList = ref([]);
+const searchInvCompany = ref('');
+const searchInvNumber = ref('');
+const currentPage = ref(1);
+const pageSize = ref(10);
+const pageCount = ref(0);
+const goToPage = ref(1);
+
+// 计算可见的页码
+const visiblePages = computed(() => {
+  const pages = [];
+  const maxVisiblePages = 5;
+  let startPage = Math.max(currentPage.value - Math.floor(maxVisiblePages / 2), 1);
+  let endPage = startPage + maxVisiblePages - 1;
+
+  if (endPage > pageCount.value) {
+    endPage = pageCount.value;
+    startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
+  }
+  return pages;
+});
+
+const lastVisiblePage = computed(() => visiblePages.value[visiblePages.value.length - 1]);
 
 onMounted(() => {
     loadDatas();
 });
 
 const loadDatas = async () => {
-    try {
-        // 使用相对路径
-        let res = await axios.get('/api/list');
-        console.log('响应数据:', res.data);
-        let temp_date = res.data.data;
-        // 格式化日期
-        temp_date.forEach(item => {
-            item.createDate = new Date(item.createDate).toLocaleDateString();
-        });
-        invList.value = temp_date;
-    } catch (error) {
-        console.error('获取数据失败:', error);
-        message.error('获取数据失败，请检查网络连接');
-    }
+  try {
+    const res = await axios.get('/search', {
+      params: {
+        invCompany: searchInvCompany.value,
+        invNumber: searchInvNumber.value,
+        currentPage: currentPage.value,
+        pageSize: pageSize.value
+      }
+    });
+    console.log('响应数据:', res.data);
+    const tempData = res.data.rows;
+    // 格式化日期
+    tempData.forEach(item => {
+      item.createDate = new Date(item.createDate).toLocaleDateString();
+    });
+    invList.value = tempData;
+    pageCount.value = res.data.pageCount;
+  } catch (error) {
+    console.error('获取数据失败:', error);
+    message.error('获取数据失败，请检查网络连接');
+  }
+};
+
+const search = () => {
+  currentPage.value = 1;
+  loadDatas();
+};
+
+const changePage = (page) => {
+  if (page >= 1 && page <= pageCount.value) {
+    currentPage.value = page;
+    loadDatas();
+  }
+};
+
+const goToSpecificPage = () => {
+  const page = parseInt(goToPage.value);
+  if (page >= 1 && page <= pageCount.value) {
+    currentPage.value = page;
+    loadDatas();
+  } else {
+    message.warning('请输入有效的页码');
+  }
 };
 
 const toUpdate = (inv) => {
