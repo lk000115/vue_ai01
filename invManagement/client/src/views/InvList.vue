@@ -46,19 +46,25 @@
 
     </tbody>
   </n-table>
-      <!-- 左下分页导航 -->
+  
+   <div class="pagination">
+          <!-- 左下分页导航 -->
     <div class="pagination-left">
       <n-button @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
         <
       </n-button>
       <div v-for="page in visiblePages" :key="page" @click="changePage(page)">
-        <div :style="'color:' + (page === currentPage ? 'red' : '')">
+        <div :style="'color:' + (page === currentPage ? 'red' : '')"  
+             style="cursor: pointer; display: inline-block; width: 30px; text-align: center;">
           {{ page }}
         </div>
       </div>
       <div v-if="pageCount > lastVisiblePage" @click="changePage(currentPage + 1)">
         ...
       </div>
+      <n-button @click="changePage(currentPage + 1)" :disabled="currentPage === pageCount">
+        > 
+      </n-button>
     </div>
     <!-- 右下前往指定页和总页数信息 -->
     <div class="pagination-right">
@@ -73,6 +79,9 @@
       <n-button @click="goToSpecificPage">页</n-button>
       <span>共 {{ pageCount }} 页</span>
     </div>
+
+   </div> 
+
 
 
   <!-- 修改模态框--弹出框 -->
@@ -243,9 +252,20 @@ const todelete = async (inv) => {
        flex-grow: 1; 
     }
     .ni {
-      width: 400px;
+      margin-right: 10px;
+      width: 200px;
        flex-grow: 10;
     }
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .pagination-left {
+    display: flex;
+    align-items: center;
+  }
 }
 
 
