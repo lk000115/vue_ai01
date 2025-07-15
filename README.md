@@ -99,4 +99,12 @@ axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 ### 生成本地自签名证书
   1 mkcert.exe -install
   2 生成IP证书: mkcert.exe 192.168.1.180 localhost 127.0.0.1 ::1
-  3 
+
+## 用PM2管理express项目
+
+1 安装pm2  npm i -g pm2
+2 启动项目  pm2 start app.js --name "vue_ai01" 
+3  查看项目状态  pm2 list
+4  重启项目  pm2 restart vue_ai01
+5  停止项目  pm2 stop vue_ai01
+6  删除项目  pm2 delete vue_ai01
