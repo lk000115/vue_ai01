@@ -38,7 +38,7 @@
         <td>
             <n-space>
                 <n-button @click="toUpdate(inv)">修改</n-button>
-                <n-button @click="todelete(inv)">删除</n-button>
+                <!-- <n-button @click="todelete(inv)">删除</n-button> -->
             </n-space>
 
         </td>
@@ -217,27 +217,27 @@ const update = async () => {
     showUpdateModal.value= false;
 }
 
-const todelete = async (inv) => {
-    // console.log(inv);
-          dialog.warning({
-          title: "警告",
-          content: "确认删除吗？",
-          positiveText: "删除",
-          negativeText: "不删除",
-          draggable: true,
-          onPositiveClick: async() => {
-           const res = await axios.delete(`/inv/delete?invNumber=${inv.invNumber}`);
-             if(res.data.code === 200) {
-               loadDatas();
-               message.info('删除成功');
-             }
-           },
-              onNegativeClick: () => {
+// const todelete = async (inv) => {
+//     // console.log(inv);
+//           dialog.warning({
+//           title: "警告",
+//           content: "确认删除吗？",
+//           positiveText: "删除",
+//           negativeText: "不删除",
+//           draggable: true,
+//           onPositiveClick: async() => {
+//            const res = await axios.delete(`/inv/delete?invNumber=${inv.invNumber}`);
+//              if(res.data.code === 200) {
+//                loadDatas();
+//                message.info('删除成功');
+//              }
+//            },
+//               onNegativeClick: () => {
         
-              }
-        });
+//               }
+//         });
     
-}
+// }
 
 
 </script>

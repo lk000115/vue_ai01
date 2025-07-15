@@ -95,3 +95,8 @@ VITE_API_BASE_URL=https://your-production-api-url.com
 
 // 根据环境变量动态配置基础 URL
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+
+### 生成本地自签名证书
+  1 mkcert.exe -install
+  2 生成IP证书: mkcert.exe 192.168.1.180 localhost 127.0.0.1 ::1
+  3 
