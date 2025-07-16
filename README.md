@@ -99,7 +99,9 @@ axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 ### 生成本地自签名证书
   1 mkcert.exe -install
   2 生成IP证书: mkcert.exe 192.168.1.180 localhost 127.0.0.1 ::1
-
+  3 客户端需要把服务器的根证书文件rootCA.pem导入到本地证书管理器
+  4 按 Win + R，输入 certmgr.msc打开证书管理器,
+  5 找到受信任的根证书颁发机构，右键点击“导入”，选择刚才生成的 rootCA.pem 文件，完成导入。
 ## 用PM2管理express项目
 
 1 安装pm2  npm i -g pm2
