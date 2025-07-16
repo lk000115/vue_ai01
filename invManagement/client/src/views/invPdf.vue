@@ -16,22 +16,30 @@
 
 
 <script   setup>
-import { ref,inject } from 'vue';
+import { ref,inject,onMounted } from 'vue';
 import * as pdfjs from 'pdfjs-dist/webpack';
 import { BrowserQRCodeReader } from '@zxing/library';
+import { useInvoiceStore } from '../common/invoiceStore';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/webpack/pdf.worker.js',
   import.meta.url
 ).toString();
 
+const invoiceStore = useInvoiceStore();
 const axios = inject('axios');
 const message = inject('message');
 
-const invoiceInfo = ref(null);
-const qrCodeData = ref(null);
-const pdftext = ref('');
+const invoiceInfo = ref(invoiceStore.invoiceInfo);
+const pdftext = ref(invoiceStore.pdftext);
+const qrCodeData = ref('');
 const error = ref('')
+
+onMounted(() => {
+  invoiceInfo.value = invoiceStore.invoiceInfo;
+  pdftext.value = invoiceStore.pdftext;
+});
+
 
 // 选择 PDF 文件
 const selectPdf = async () => {
@@ -50,6 +58,7 @@ const selectPdf = async () => {
       const text = textContent.items.map(item => item.str).join(' ');
     //   console.log('提取的 PDF 文本内容:', text); // 打印提取的文本
       pdftext.value = text;
+      invoiceStore.setPdfText(pdftext.value);
       // 提取图片并解析二维码
       const images = await extractImagesFromPage(page);
       await parseQRCodeFromImages(images); 
@@ -75,6 +84,7 @@ const parseInvoiceInfo = (text) => {
       invDate: qrCodeData.value[5],
       invAmount: qrCodeData.value[4],
     };
+    invoiceStore.setInvoiceInfo(invoiceInfo.value);
   } else {
     invoiceInfo.value = {
       invNumber: '未找到',

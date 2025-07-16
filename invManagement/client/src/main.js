@@ -5,7 +5,7 @@ import {router} from "./common/router.js"
 import naive from 'naive-ui'
 import {createDiscreteApi} from 'naive-ui'
 import axios from 'axios';
-
+import {createPinia} from "pinia";
 // 引入 vconsole 进行手机端调试
 // import VConsole from 'vconsole';
 // const vConsole = new VConsole();
@@ -25,5 +25,5 @@ app.provide('notification', notification)
 app.provide('server_url', axios.defaults.baseURL)
 app.use(router)
 app.use(naive)
-
+app.use(createPinia())
 app.mount('#app')
