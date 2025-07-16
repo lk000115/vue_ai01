@@ -2,11 +2,12 @@
 <div >
    <h3>读取pdf电子发票</h3>
       <n-button @click="selectPdf">选择 PDF 文件</n-button>
+    <div v-if="error" class="error">{{ error }}</div> 
     <div v-if="invoiceInfo">
       <p>发票号码: {{ invoiceInfo.invNumber }}</p>
       <p>开票金额: {{ invoiceInfo.invAmount }}</p>
       <p>开票日期: {{ invoiceInfo.invDate }}</p>
-      <p>开票公司: {{ invoiceInfo.invCompany }}</p>
+      <p>发票内容信息: {{ pdftext }}</p>
     </div>
   </div>
 
@@ -15,7 +16,7 @@
 
 
 <script   setup>
-import { ref } from 'vue';
+import { ref,inject } from 'vue';
 import * as pdfjs from 'pdfjs-dist/webpack';
 import { BrowserQRCodeReader } from '@zxing/library';
 
@@ -24,8 +25,13 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url
 ).toString();
 
+const axios = inject('axios');
+const message = inject('message');
+
 const invoiceInfo = ref(null);
 const qrCodeData = ref(null);
+const pdftext = ref('');
+const error = ref('')
 
 // 选择 PDF 文件
 const selectPdf = async () => {
@@ -42,13 +48,13 @@ const selectPdf = async () => {
       const page = await pdf.getPage(1);
       const textContent = await page.getTextContent();
       const text = textContent.items.map(item => item.str).join(' ');
-      console.log('提取的 PDF 文本内容:', text); // 打印提取的文本
-      parseInvoiceInfo(text);
-     
+    //   console.log('提取的 PDF 文本内容:', text); // 打印提取的文本
+      pdftext.value = text;
       // 提取图片并解析二维码
       const images = await extractImagesFromPage(page);
       await parseQRCodeFromImages(images); 
-
+      parseInvoiceInfo(text);
+      insertInvoiceData(invoiceInfo.value);
     }
   };
 };
@@ -56,26 +62,24 @@ const selectPdf = async () => {
 
 // 解析发票信息
 const parseInvoiceInfo = (text) => {
-  // 匹配中间部分的正则表达式
-  const regex = /(\d{10,24})(.*)$/
-  const match = text.match(regex);
-//   console.log('正则表达式:', regex); // 打印正则表达式
-  console.log('匹配结果:', match[0]); // 打印匹配结果
-  const parts = match[0].split(/\s+/);
-  console.log('提取的发票信息:', parts); // 打印提取的发票信息
-  if (match) {
+//   // 匹配中间部分的正则表达式
+//   const regex = /(\d{10,24})(.*)$/
+//   const match = text.match(regex);
+// //   console.log('正则表达式:', regex); // 打印正则表达式
+//   console.log('匹配结果:', match[0]); // 打印匹配结果
+//   const parts = match[0].split(/\s+/);
+//   console.log('提取的发票信息:', parts); // 打印提取的发票信息
+  if (qrCodeData.value) {
     invoiceInfo.value = {
-      invNumber: parts[0],
-      invDate: `${parts[1]}-${parts[3]}-${parts[5]}`,
-      invCompany: parts[9],
-      invAmount: parts[17]
+      invNumber: qrCodeData.value[3],
+      invDate: qrCodeData.value[5],
+      invAmount: qrCodeData.value[4],
     };
   } else {
     invoiceInfo.value = {
       invNumber: '未找到',
       invDate: '未找到',
-      invCompany: '未找到',
-      invAmount: '未找到'
+      invAmount: '未找到',
     };
   }
 };
@@ -101,16 +105,42 @@ const parseQRCodeFromImages = async (images) => {
   const codeReader = new BrowserQRCodeReader();
   try {
     const result = await codeReader.decodeFromImageUrl(images);
-    qrCodeData.value = result.text;
+    qrCodeData.value = result.text.split(',');
     console.log('二维码解析结果:', result.text);
   } catch (err) {
     console.error('二维码解析失败:', err);
+    error.value = '二维码解析失败'+ err;
     qrCodeData.value = '未找到二维码或解析失败';
   }
 };
+
+// 处理扫码结果插入到数据库
+const insertInvoiceData = async (result) => {
+  try {
+    console.log('准备插入发票数据:', result);
+    const res = await axios.post('/api/add', result);
+    console.log(res.data);
+    if (res.data.code === 200) {
+      message.info('发票信息录入成功');
+    } else {
+      message.error('发票信息录入失败: ' + res.data.msg);
+      error.value = '发票重复,录入失败: ' + res.data.msg;
+    }
+  } catch (err) {
+    message.error('发票重复录入或其他原因: ' + err.message);
+    // 重置扫描状态
+    resetScanState();
+  }
+}
+
 
 
 </script>
 
 <style    scoped>
+.error {
+  color: red;
+  margin: 10px 0;
+}
+
 </style> 
