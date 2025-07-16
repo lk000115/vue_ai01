@@ -49,3 +49,10 @@ let matches = str.match(reg);
 
 console.log(matches);
 
+let str1 = "sdfsdfsfsdf   dsdsdsd  $300.12  sdsd   weqsdfsasdfas   $600.32  gddsfsfsfsdf"
+
+let reg1 = /\$\d+\.\d+/g
+
+let matches1 = str1.match(reg1)
+
+console.log('-----',matches1);
