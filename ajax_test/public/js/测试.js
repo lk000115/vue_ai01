@@ -46,11 +46,6 @@ let reg = /\S*公司/g;
 
 // 获取字符串str中第二个带公司的字符串
 let matches = str.match(reg);
-// if (matches && matches.length > 1) {
-//     let res = matches[1];
-//     console.log(res);
-// } else {
-//     console.log('未找到第二个带公司的字符串');
-// }
+
 console.log(matches);
 
