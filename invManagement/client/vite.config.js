@@ -29,5 +29,8 @@ export default defineConfig({
         // }
       }
     }
+  },
+  optimizeDeps: {
+    exclude: ['pdfjs-dist'] // 排除 pdfjs-dist 以绕过依赖预构建
   }
 });

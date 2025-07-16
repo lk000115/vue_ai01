@@ -8,6 +8,7 @@ let routes = [
       children:[
          {path:"invlist", component:()=>import("../views/Invlist.vue")},
          {path:"invscan", component:()=>import("../views/InvScan.vue")},
+         {path:"invPdf", component:()=>import("../views/invPdf.vue")},
       ]
    }
 

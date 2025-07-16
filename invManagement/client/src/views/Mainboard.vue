@@ -18,7 +18,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 let menus = [
     {name:'发票列表',href:'/mainboard/invlist'},
-    {name:'发票扫描',href:'/mainboard/invscan'} 
+    {name:'发票扫描',href:'/mainboard/invscan'}, 
+    {name:'PDF发票',href:'/mainboard/invPdf'}, 
 ]
 
 
