@@ -138,8 +138,7 @@ const insertInvoiceData = async (result) => {
     }
   } catch (err) {
     message.error('发票重复录入或其他原因: ' + err.message);
-    // 重置扫描状态
-    resetScanState();
+
   }
 }
 
