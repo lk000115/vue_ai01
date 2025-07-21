@@ -110,3 +110,4 @@ axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 4  重启项目  pm2 restart vue_ai01
 5  停止项目  pm2 stop vue_ai01
 6  删除项目  pm2 delete vue_ai01
+
