@@ -18,8 +18,9 @@ router.get('/detail',async (req, res)=>{
 // 新建分页显示接口 /api/search
 router.get('/search', async (req, res) => {
     // 获取查询参数并设置默认值
-    const invCompany = req.query.invCompany || '';
-    const invNumber = req.query.invNumber || '';
+    // const invCompany = req.query.invCompany || '';
+    // const invNumber = req.query.invNumber || '';
+     const keyword = req.query.keyword || '';
     const currentPage = parseInt(req.query.currentPage) || 1;
     const pageSize = parseInt(req.query.pageSize) || 10;
 
@@ -30,20 +31,26 @@ router.get('/search', async (req, res) => {
     let whereClause = '';
     const params = [];
 
-    if (invCompany || invNumber) {
-        whereClause += 'WHERE ';
-        if (invCompany) {
-            whereClause += 'invCompany LIKE ? ';
-            params.push(`%${invCompany}%`);
-            if (invNumber) {
-                whereClause += 'AND invNumber LIKE ? ';
-                params.push(`%${invNumber}%`);
-            }
-        } else {
-            whereClause += 'invNumber LIKE ? ';
-            params.push(`%${invNumber}%`);
-        }
+    // if (invCompany || invNumber) {
+    //     whereClause += 'WHERE ';
+    //     if (invCompany) {
+    //         whereClause += 'invCompany LIKE ? ';
+    //         params.push(`%${invCompany}%`);
+    //         if (invNumber) {
+    //             whereClause += 'AND invNumber LIKE ? ';
+    //             params.push(`%${invNumber}%`);
+    //         }
+    //     } else {
+    //         whereClause += 'invNumber LIKE ? ';
+    //         params.push(`%${invNumber}%`);
+    //     }
+    // }
+
+    if (keyword) {
+        whereClause += 'WHERE (invCompany LIKE ? OR invNumber LIKE ? OR notes LIKE ?) ';
+        params.push(`%${keyword}%`, `%${keyword}%`, `%${keyword}%`);
     }
+
 
     // 构建统计总记录数的 SQL 语句
     const countSql = `SELECT COUNT(*) as total FROM invList ${whereClause}`;
