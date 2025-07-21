@@ -55,7 +55,7 @@ router.get('/search', async (req, res) => {
     // 构建统计总记录数的 SQL 语句
     const countSql = `SELECT COUNT(*) as total FROM invList ${whereClause}`;
     let { err, rows } = await db.async.all(countSql, params);
-    if (err ) {
+    if (err || rows.length === 0) {
         return res.send({ code: 500, msg: "查询总记录数失败" });
     }
     const total = rows[0].total;
@@ -65,23 +65,21 @@ router.get('/search', async (req, res) => {
     const selectSql = `SELECT * FROM invList ${whereClause} ORDER BY createDate DESC LIMIT ? OFFSET ?`;
     const selectParams = [...params, pageSize, offset];
     ({ err, rows } = await db.async.all(selectSql, selectParams));
-    if (err ) {
+    if (err || rows.length === 0) {
         return res.send({ code: 500, msg: "查询记录失败" });
     }
-
-    // 添加 hasData 字段来标识是否有查询到数据
-    const hasData = rows.length > 0;
 
     // 返回结果
     res.send({
         code: 200,
-        msg: hasData ? "查询成功，有匹配记录" : "查询成功，无匹配记录",
+        msg:  "查询成功",
         currentPage,
         pageSize,
         pageCount,
         rows
-    });
-});
+    })
+
+});          
 
 
 
