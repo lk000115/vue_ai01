@@ -3,17 +3,17 @@
    <div class="header">
       <n-button class="nb" @click="search">搜索</n-button>
       <n-input
-        v-model:value="searchInvCompany"
+        v-model:value="keyword"
         class="ni"
         placeholder="请输入开票公司"
         type="text"
       />
-      <n-input
+      <!-- <n-input
         v-model:value="searchInvNumber"
         class="ni"
         placeholder="请输入发票号码"
         type="text"
-      />
+      /> -->
     </div>
     <n-table :bordered="false" :single-line="false">
     <thead>
@@ -70,7 +70,7 @@
     <div class="pagination-right">
       <span>前往</span>
       <n-input
-        v-model:value="goToPage"
+        v-model:value="goToPageStr"
         type="number"
         :min="1"
         :max="pageCount"
@@ -122,12 +122,25 @@ const updateInv = reactive({
 });
 
 let invList = ref([]);
-const searchInvCompany = ref('');
-const searchInvNumber = ref('');
+// const searchInvCompany = ref('');
+// const searchInvNumber = ref('');
+const keyword = ref(''); // 用于搜索开票公司
 const currentPage = ref(1);
 const pageSize = ref(10);
 const pageCount = ref(0);
 const goToPage = ref(1);
+
+// 计算属性，将 goToPage 转换为字符串
+const goToPageStr = computed({
+  get: () => goToPage.value.toString(),
+  set: (newValue) => {
+    const num = parseInt(newValue, 10);
+    if (!isNaN(num)) {
+      goToPage.value = num;
+    }
+  }
+});
+
 
 // 计算可见的页码
 const visiblePages = computed(() => {
@@ -157,8 +170,9 @@ const loadDatas = async () => {
   try {
     const res = await axios.get('/api/search', {
       params: {
-        invCompany: searchInvCompany.value,
-        invNumber: searchInvNumber.value,
+        keyword: keyword.value,
+        // invNumber: keyword.value, // 如果需要搜索发票号码，可以使用同一个输入框
+        // notes:keyword.value,
         currentPage: currentPage.value,
         pageSize: pageSize.value
       }
@@ -190,7 +204,7 @@ const changePage = (page) => {
 };
 
 const goToSpecificPage = () => {
-  const page = parseInt(goToPage.value);
+  const page = goToPage.value;
   if (page >= 1 && page <= pageCount.value) {
     currentPage.value = page;
     loadDatas();
