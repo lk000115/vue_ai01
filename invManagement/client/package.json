@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@paddlejs-models/ocr": "^1.2.4",
     "@zxing/library": "^0.21.3",
     "axios": "^1.10.0",
     "pdfjs-dist": "^5.3.93",
