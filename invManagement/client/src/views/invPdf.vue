@@ -35,7 +35,8 @@ const invoiceInfo = ref(invoiceStore.invoiceInfo);
 const pdftext = ref(invoiceStore.pdftext);
 const qrCodeData = ref('');
 const error = ref('')
-
+// 替换为你自己的 AppCode
+const appCode = '3d82fe6e725741589a2ef77b88bcfffe'; 
 
 
 onMounted(() => {
@@ -68,13 +69,75 @@ const selectPdf = async () => {
       // 提取图片并解析二维码
       const images = await extractImagesFromPage(page);
       await parseQRCodeFromImages(images); 
-      
+    
+    //阿里云接口  
+      try {
+        // 将pdf文件转换为 Base64 编码
+         const pdfBase64 = await convertFileToBase64(file);
+        
+        // 调用阿里云接口
+          const result = await callAliyunOCR(pdfBase64);
+        // 打印接口返回结果
+        console.log('阿里云 OCR 接口返回结果:', result.data); 
+        // processOCRResult(result);
+      } catch (err) {
+        error.value = '处理文件失败: ' + err.message;
+      }
 
 
       parseInvoiceInfo(text);
       insertInvoiceData(invoiceInfo.value);
     }
   };
+};
+
+// 将文件转换为 Base64 编码
+const convertFileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result.split(',')[1];
+      // console.log('PDF Base64 编码长度:', base64.length);
+      // console.log('PDF Base64 编码前 100 个字符:', base64.substring(0, 100));
+      resolve(base64);
+    };
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
+  });
+};
+
+
+// 调用阿里云 OCR 接口
+const callAliyunOCR = async (base64) => {
+  const requestData = {
+    // 将参数名从 image 改为 img
+    img: base64,
+    configure: JSON.stringify({ side: "face" })
+  };
+  const requestHeaders = {
+    'Authorization': `APPCODE ${appCode}`,
+    'Content-Type': 'application/json; charset=UTF-8'
+  };
+
+  try {
+   
+    const response = await axios.post(
+      'https://dgfp.market.alicloudapi.com/ocrservice/invoice',
+      requestData,
+      {
+        headers: requestHeaders
+      }
+    );
+
+    return response.data;
+  } catch (err) {
+    if (err.response) {
+      console.error('服务器返回的错误响应数据:', JSON.stringify(err.response.data, null, 2));
+    } else {
+      console.error('请求发生错误:', err.message);
+    }
+    throw new Error('调用阿里云 OCR 接口失败: ' + err.message);
+  }
 };
 
 
