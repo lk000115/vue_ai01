@@ -42,7 +42,6 @@ const appCode = '3d82fe6e725741589a2ef77b88bcfffe';
 
 onMounted(() => {
   invoiceInfo.value = invoiceStore.invoiceInfo;
-  pdftext.value = invoiceStore.pdftext;
 });
 
 
@@ -62,8 +61,8 @@ const selectPdf = async () => {
       const pdf = await pdfjs.getDocument({ data: arrayBuffer }).promise;
       const page = await pdf.getPage(1);
 
-      const textContent = await page.getTextContent();
-      const text = textContent.items.map(item => item.str).join(' ');
+      // const textContent = await page.getTextContent();
+      // const text = textContent.items.map(item => item.str).join(' ');
       // console.log('提取的 PDF 文本内容:', text); // 打印提取的文本
       // pdftext.value = text;
       // invoiceStore.setPdfText(pdftext.value);
@@ -85,8 +84,8 @@ const selectPdf = async () => {
           return;
       }else{
           //调用阿里云接口，并把阿里云解析的数据存入数据库
-           doCallAliyunOCR();
-           insertInvoiceData(invoiceInfo.value);
+          await doCallAliyunOCR(file);
+          await insertInvoiceData(invoiceInfo.value);
         }
 
 
@@ -113,7 +112,7 @@ const convertFileToBase64 = (file) => {
 };
 
 // 调用阿里云接口
- const doCallAliyunOCR = ()=>{
+ const doCallAliyunOCR = async (file)=>{
        //阿里云接口  
       try {
         // 将pdf文件转换为 Base64 编码
@@ -123,7 +122,7 @@ const convertFileToBase64 = (file) => {
         const result = await callAliyunOCR(pdfBase64);
         // 打印接口返回结果
         console.log('阿里云 OCR 接口返回结果:', result.data);
-         processOCRResult(result.data);
+         processOCRResult(result);
       } catch (err) {
         error.value = '处理文件失败: ' + err.message;
       }
@@ -148,7 +147,7 @@ const callAliyunOCR = async (base64) => {
   try {
 
     const response = await axios.post(
-      'https://dgfp.market.alicloudapi.com/ocrservice/invoice',
+      'https://dgfp.market.alicloudapi.com/ocrservice/invoice123',
       requestData,
       {
         headers: requestHeaders
@@ -159,8 +158,10 @@ const callAliyunOCR = async (base64) => {
   } catch (err) {
     if (err.response) {
       console.error('服务器返回的错误响应数据:', JSON.stringify(err.response.data, null, 2));
+      error.value = '调用阿里云 OCR 接口失败: ' + err.response.data.message;
     } else {
       console.error('请求发生错误:', err.message);
+      error.value = '调用阿里云 OCR 接口失败: ' + err.message;
     }
     throw new Error('调用阿里云 OCR 接口失败: ' + err.message);
   }
@@ -194,11 +195,11 @@ const processOCRResult = (result) => {
   if (result && result.data) {
     const data = result.data;
     invoiceInfo.value = {
-      invNumber: data.发票代码 || '未找到',
+      invNumber: data.发票号码 || '未找到',
       invDate: data.开票日期 || '未找到',
       invAmount: data.发票金额 || '未找到',
       invCompany: data.销售方名称 || '未找到',
-      notes: data.发票详单 || '未找到'
+      notes: JSON.stringify(data) || '未找到'
     };
     invoiceStore.setInvoiceInfo(invoiceInfo.value);
   } else {
