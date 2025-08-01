@@ -97,10 +97,10 @@ router.get('/list',async (req, res)=>{
 //新增接口   /api/add
 
 router.post('/add',async (req, res)=>{
-    let {invNumber,invAmount,invDate} = req.body
+    let {invNumber,invAmount,invDate,invCompany,notes} = req.body
     let createDate = new Date().getTime();
-    let sql = "insert into invList ('invNumber','invAmount','invDate','createDate') values(?,?,?,?)"
-    let paramas = [invNumber,invAmount,invDate,createDate];
+    let sql = "insert into invList ('invNumber','invAmount','invDate','createDate','invCompany','notes') values(?,?,?,?,?,?)"
+    let paramas = [invNumber,invAmount,invDate,createDate,invCompany,notes];
     let {err,rows} = await db.async.run(sql,paramas);
     // console.log(rows);
     if(err == null && invNumber.length > 0) {

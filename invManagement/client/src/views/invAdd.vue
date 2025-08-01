@@ -179,7 +179,9 @@ const onDecode = (result) => {
       // 假设第 4 个字段为金额
       invAmount: parts[4] || '',
       // 假设第 5 个字段为日期
-      invDate: parts[5] || ''
+      invDate: parts[5] || '',
+      invCompany: '',
+      notes: '' 
     };
     scanned.value = true;
     isScanning.value = false;
@@ -201,7 +203,7 @@ const onDecode = (result) => {
 const insertInvoiceData = async (result) => {
   try {
     console.log('准备插入发票数据:', result);
-    const res = await axios.post('/api/add', {invNumber: result.invNumber, invAmount: result.invAmount, invDate: result.invDate});
+    const res = await axios.post('/api/add', result);
     console.log(res.data);
     if (res.data.code === 200) {
       message.info('发票信息录入成功');
