@@ -34,7 +34,7 @@
         <td>{{ inv.invDate }}</td>
         <td>{{ inv.createDate }}</td>
         <td>{{ inv.invCompany }}</td>
-        <td>{{ inv.notes }}</td>
+        <td>{{ truncateText(inv.notes) }}</td>
         <td>
             <n-space>
                 <n-button @click="toUpdate(inv)">修改</n-button>
@@ -230,6 +230,13 @@ const update = async () => {
     }
     showUpdateModal.value= false;
 }
+
+// 添加文本截断过滤器
+const truncateText = (text, length = 20) => {
+  if (!text) return '';
+  return text.length > length ? text.substring(0, length) + '...' : text;
+};
+
 
 // const todelete = async (inv) => {
 //     // console.log(inv);

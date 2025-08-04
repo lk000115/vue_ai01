@@ -127,7 +127,7 @@ const convertFileToBase64 = (file) => {
         // 调用阿里云接口
         const result = await callAliyunOCR(pdfBase64);
         // 打印接口返回结果
-        // console.log('阿里云 OCR 接口返回结果:', result.data);
+        console.log('阿里云 OCR 接口返回结果:', result.data);
          processOCRResult(result);
       } catch (err) {
         error.value = '处理文件失败: ' + err.message;
@@ -205,7 +205,7 @@ const processOCRResult = (result) => {
       invDate: data.开票日期 || '未找到',
       invAmount: data.发票金额 || '未找到',
       invCompany: data.销售方名称 || '未找到',
-      notes: JSON.stringify(data) || '未找到'
+      notes: JSON.stringify(data.发票详单) || '未找到'
     };
     invoiceStore.setInvoiceInfo(invoiceInfo.value);
   } else {
