@@ -78,6 +78,7 @@ const selectPdf = async () => {
         const res = await axios.get('/api/detail', {
           params: { invNumber: qrCodeData.value[3] } 
         });
+
       if (res.data.code === 200) {
           error.value = '该发票已存在,请勿重复录入';
           parseInvoiceInfo(qrCodeData.value);
@@ -85,7 +86,10 @@ const selectPdf = async () => {
       }else{
           //调用阿里云接口，并把阿里云解析的数据存入数据库
           await doCallAliyunOCR(file);
-          await insertInvoiceData(invoiceInfo.value);
+          if(!error.value){
+
+            await insertInvoiceData(invoiceInfo.value);
+          }
         }
 
 
@@ -94,7 +98,7 @@ const selectPdf = async () => {
    
     }
   };
-};
+};   //   结束
 
 // 将文件转换为 Base64 编码
 const convertFileToBase64 = (file) => {
