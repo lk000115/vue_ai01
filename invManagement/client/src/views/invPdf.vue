@@ -86,9 +86,11 @@ const selectPdf = async () => {
       }else{
           //调用阿里云接口，并把阿里云解析的数据存入数据库
           await doCallAliyunOCR(file);
-          if(!error.value){
-
+          if(error.value.indexOf('处理文件失败') !== -1){
+          }else{
+            //如果调用阿里云接口成功,再把返回数据存入数据库
             await insertInvoiceData(invoiceInfo.value);
+
           }
         }
 
@@ -125,7 +127,7 @@ const convertFileToBase64 = (file) => {
         // 调用阿里云接口
         const result = await callAliyunOCR(pdfBase64);
         // 打印接口返回结果
-        console.log('阿里云 OCR 接口返回结果:', result.data);
+        // console.log('阿里云 OCR 接口返回结果:', result.data);
          processOCRResult(result);
       } catch (err) {
         error.value = '处理文件失败: ' + err.message;
