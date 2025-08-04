@@ -151,7 +151,7 @@ const callAliyunOCR = async (base64) => {
   try {
 
     const response = await axios.post(
-      'https://dgfp.market.alicloudapi.com/ocrservice/invoice123',
+      'https://dgfp.market.alicloudapi.com/ocrservice/invoice',
       requestData,
       {
         headers: requestHeaders
